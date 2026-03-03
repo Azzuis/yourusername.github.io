@@ -44,6 +44,38 @@
     box-sizing: border-box; /* Ensures padding doesn't push the width past 100% */
   }
   .section * { pointer-events:all; } /* Make contents clickable */
+
+    /* The Glass Container */
+   .glass-card {
+     background: rgba(11, 36, 32, 0.4); 
+     backdrop-filter: blur(8px); 
+     -webkit-backdrop-filter: blur(8px); /* For Safari */
+     border: 1px solid rgba(82, 240, 180, 0.15);
+     padding: 2rem;
+     border-radius: 16px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 1.2rem;
+     max-width: 450px;
+     width: 100%;
+     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+   }
+   
+   /* The Image Inside the Card */
+   .project-img {
+     width: 100%;
+     height: auto;
+     border-radius: 8px;
+     border: 1px solid rgba(82, 240, 180, 0.2);
+     object-fit: cover;
+   }
+   
+   /* Tweak the text so it fits the card better */
+   .glass-card .section-text {
+     font-size: 1rem;
+     margin-bottom: 0.5rem;
+   }
   
   .cta-group{display:flex;flex-direction:column;align-items:center;gap:1rem;pointer-events:all;text-align:center;}
   .tagline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(0.85rem,1.6vw,1.2rem);font-style:italic;letter-spacing:0.06em;color:rgba(200,237,232,0.5);}
@@ -92,6 +124,13 @@
   <div class="section" id="projects">
     <h2 class="section-title buoy">Projects</h2>
     <p class="section-text buoy">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
+  </div>
+
+  <div class="glass-card buoy">
+   <img src="your-project-image.jpg" class="project-img" alt="Project Alpha">
+   <h3 style="color: #c8ede8; font-family: 'Barlow Condensed'; letter-spacing: 0.1em;">Project 01</h3>
+   <p class="section-text">A brief description of the ambient UI integration.</p>
+   <a href="#" class="btn-cta">View Case Study</a>
   </div>
 
   <div class="section" id="about">
