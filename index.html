@@ -7,30 +7,50 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html,body{width:100%;height:100%;overflow:hidden;background:#0b2420;cursor:none}
+  
+  /* 1. ALLOW SCROLLING: Removed height:100% and overflow:hidden */
+  html,body{width:100%;background:#0b2420;cursor:none; scroll-behavior: smooth;}
+  
   .cur{position:fixed;width:8px;height:8px;border-radius:50%;background:#7fffd4;pointer-events:none;z-index:1000;transform:translate(-50%,-50%);transition:width .2s,height .2s}
   .cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(127,255,212,0.4);pointer-events:none;z-index:999;transform:translate(-50%,-50%)}
+  
+  /* 2. LOCK CANVAS TO BACKGROUND */
   #text-source{position:fixed;top:0;left:0;pointer-events:none;opacity:0;z-index:-1;}
-  #gl-canvas{position:fixed;inset:0;z-index:1;display:block;}
-  #ui{position:fixed;inset:0;z-index:10;pointer-events:none;}
-  nav{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;padding:1.6rem 2.5vw;pointer-events:all;}
+  #gl-canvas{position:fixed;inset:0;z-index:1;display:block;pointer-events:none;}
+  
+  /* 3. UPDATE UI FOR SCROLLING */
+  #ui{position:relative;z-index:10;pointer-events:none;width:100%;}
+  
+  /* 4. FIX NAV TO TOP */
+  nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;padding:1.6rem 2.5vw;pointer-events:all;z-index:100;}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:#c8ede8;text-decoration:none;display:flex;align-items:center;gap:0.45rem;text-shadow:0 0 20px rgba(82,240,180,0.4);flex-shrink:0;}
   .nav-led{width:6px;height:6px;border-radius:50%;background:#52f0b4;box-shadow:0 0 8px #52f0b4;animation:ledp 2.5s ease-in-out infinite;flex-shrink:0;}
   @keyframes ledp{0%,100%{opacity:1}50%{opacity:0.3}}
   .nav-links{display:flex;gap:2.5rem;list-style:none;padding-top:0.15rem;}
   .nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,237,232,0.6);text-decoration:none;transition:color 0.2s;pointer-events:all;}
   .nav-links a:hover{color:#c8ede8}
-  .cta-group{position:absolute;bottom:10%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:1rem;pointer-events:all;text-align:center;}
+  
+  /* 5. CREATE PAGE SECTIONS */
+  .section { position:relative; min-height:100vh; width:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; pointer-events:none; }
+  .section * { pointer-events:all; } /* Make contents clickable */
+  
+  .cta-group{display:flex;flex-direction:column;align-items:center;gap:1rem;pointer-events:all;text-align:center;}
   .tagline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(0.85rem,1.6vw,1.2rem);font-style:italic;letter-spacing:0.06em;color:rgba(200,237,232,0.5);}
   .btn-cta{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#0b2420;background:#52f0b4;border:none;padding:0.8rem 2.4rem;cursor:none;text-decoration:none;display:inline-block;transition:background 0.2s,box-shadow 0.2s;}
   .btn-cta:hover{background:#7fffd4;box-shadow:0 0 28px rgba(82,240,180,0.5)}
-  .explore{font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,237,232,0.25);display:flex;flex-direction:column;align-items:center;gap:0.4rem;}
+  .explore{font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,237,232,0.25);display:flex;flex-direction:column;align-items:center;gap:0.4rem;margin-top:2rem;}
   .explore-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(200,237,232,0.25),transparent);animation:el 1.8s ease-in-out infinite;}
   @keyframes el{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-  .cmeta{position:absolute;font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,237,232,0.2);line-height:1.9;}
+  
+  /* Fixed corners for hero meta */
+  .cmeta{position:absolute;font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,237,232,0.2);line-height:1.9; pointer-events:none;}
   .cm-bl{bottom:2.5%;left:2.5vw}
   .cm-br{bottom:2.5%;right:2.5vw;text-align:right}
   .buoy{display:inline-block}
+
+  /* Typography for new sections */
+  .section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem, 6vw, 5rem); color:#52f0b4; letter-spacing:0.05em; text-shadow:0 0 20px rgba(82,240,180,0.2); margin-bottom: 1rem;}
+  .section-text { font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; color:rgba(200,237,232,0.7); max-width: 600px; text-align: center; line-height: 1.6;}
 </style>
 </head>
 <body>
@@ -38,23 +58,42 @@
 <canvas id="text-source"></canvas>
 <canvas id="gl-canvas"></canvas>
 
+<nav>
+  <a href="#hero" class="nav-logo buoy" id="b-logo"><span class="nav-led"></span>REMINDR</a>
+  <ul class="nav-links">
+    <li><a href="#projects" class="buoy">Projects</a></li>
+    <li><a href="#about" class="buoy">About Me</a></li>
+    <li><a href="#contact" class="buoy">Contact</a></li>
+  </ul>
+</nav>
+
 <div id="ui">
-  <nav>
-    <a href="#" class="nav-logo buoy" id="b-logo"><span class="nav-led"></span>REMINDR</a>
-    <ul class="nav-links">
-      <li><a href="#" class="buoy" id="b-n1">Projects</a></li>
-      <li><a href="#" class="buoy" id="b-n2">About Me</a></li>
-      <li><a href="#" class="buoy" id="b-n3">Contact</a></li>
-      <li><a href="#" class="buoy" id="b-n4">Blog</a></li>
-    </ul>
-  </nav>
-  <div class="cta-group">
-    <p class="tagline">Smart LED reminders — woven into everyday life.</p>
-    <a href="#" class="btn-cta buoy" id="b-btn">See Our Work</a>
-    <div class="explore">Explore<div class="explore-line"></div></div>
+  <div class="section" id="hero">
+    <div class="cta-group">
+      <p class="tagline">Smart LED reminders — woven into everyday life.</p>
+      <a href="#projects" class="btn-cta buoy" id="b-btn">See Our Work</a>
+      <div class="explore">Scroll to Explore<div class="explore-line"></div></div>
+    </div>
+    <div class="cmeta cm-bl">Smart IoT // 2026<br>remind-r.ca</div>
+    <div class="cmeta cm-br">Est. 2026 //<br>Design No. 01</div>
   </div>
-  <div class="cmeta cm-bl">Smart IoT // 2025<br>remind-r.ca</div>
-  <div class="cmeta cm-br">Est. 2025 //<br>Design No. 01</div>
+
+  <div class="section" id="projects">
+    <h2 class="section-title buoy">Projects</h2>
+    <p class="section-text buoy">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
+  </div>
+
+  <div class="section" id="about">
+    <h2 class="section-title buoy">About Me</h2>
+    <p class="section-text buoy">Designing the future of calm technology. Over a decade of experience bridging hardware engineering with intuitive UX design.</p>
+  </div>
+  
+  <div class="section" id="contact">
+    <h2 class="section-title buoy">Contact</h2>
+    <p class="section-text buoy">Ready to build something tangible?</p>
+    <br>
+    <a href="mailto:hello@remind-r.ca" class="btn-cta buoy">Get in Touch</a>
+  </div>
 </div>
 
 <div class="cur" id="cur"></div>
@@ -67,8 +106,18 @@
 const cur = document.getElementById('cur');
 const curRing = document.getElementById('curRing');
 let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function animCur(){rx+=(mx-rx)*0.1;ry+=(my-ry)*0.1;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(animCur);})();
+
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY; 
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+
+(function animCur(){
+  rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1; 
+  curRing.style.left=rx+'px'; curRing.style.top=ry+'px'; 
+  requestAnimationFrame(animCur);
+})();
+
 document.querySelectorAll('a,.btn-cta').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';curRing.style.width='44px';curRing.style.height='44px'});
   el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';curRing.style.width='32px';curRing.style.height='32px'});
@@ -81,21 +130,30 @@ const textCanvas = document.getElementById('text-source');
 const tCtx = textCanvas.getContext('2d');
 
 function drawTextScene(w, h) {
-  textCanvas.width=w; textCanvas.height=h;
-  tCtx.fillStyle='#0d2d27';
-  tCtx.fillRect(0,0,w,h);
+  textCanvas.width=w; 
+  
+  // Find fitting font size
   let lo=10,hi=600;
   for(let i=0;i<20;i++){
     const mid=(lo+hi)/2;
     tCtx.font=`${mid}px 'Bebas Neue',serif`;
     tCtx.measureText('REMINDR').width < w*0.99 ? lo=mid : hi=mid;
   }
+  
   const fontSize=lo;
   const lineH=fontSize*0.88;
-  const rows=Math.ceil(h/lineH)+1;
+  
+  // Calculate exact height needed for perfect seamless repeating
+  const rows=Math.ceil(h/lineH) + 1;
+  textCanvas.height=rows*lineH; 
+
+  tCtx.fillStyle='#0d2d27';
+  tCtx.fillRect(0,0,w,textCanvas.height);
+  
   const colors=['rgba(20,90,75,0.55)','rgba(22,100,84,0.68)','rgba(24,110,92,0.78)',
     'rgba(26,122,102,0.88)','rgba(28,135,112,0.94)','rgba(30,148,122,1.0)',
     'rgba(32,160,130,1.0)','rgba(34,172,140,1.0)'];
+    
   tCtx.textAlign='center'; tCtx.textBaseline='top';
   tCtx.font=`${fontSize}px 'Bebas Neue',serif`;
   for(let r=0;r<rows;r++){
@@ -126,14 +184,13 @@ const fsSource = `
   uniform sampler2D u_scene;
   uniform float u_time;
   uniform vec2  u_resolution;
+  uniform float u_scrollY;
 
-  // Trail points — local groove displacement
   uniform vec2  u_tPos[24];
   uniform vec2  u_tVel[24];
   uniform float u_tAge[24];
   uniform int   u_tCount;
 
-  // Propagating ring waves — spawn on long continuous movement
   uniform vec2  u_wPos[6];
   uniform float u_wAge[6];
   uniform float u_wStr[6];
@@ -143,62 +200,53 @@ const fsSource = `
     vec2 disp = vec2(0.0);
     vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
 
-    // Ambient background ripple — always present, very subtle
+    // Ambient ripple
     disp.x += sin(uv.x*3.8+u_time*0.6)*0.0012 + sin(uv.y*5.2+u_time*0.45)*0.0008;
     disp.y += cos(uv.x*4.5+u_time*0.55)*0.0012 + cos(uv.y*2.8+u_time*0.7)*0.0008;
 
-    // ── Trail: narrow local groove ──
-    // Each point pulls nearby pixels in the direction the cursor moved.
-    // spatial falloff is tight (55.0) so only pixels very close to the
-    // cursor path are affected — like a thin groove in the water.
+    // Trail
     for(int i=0; i<24; i++){
       if(i >= u_tCount) break;
       vec2 diff  = (uv - u_tPos[i]) * aspect;
       float dist = length(diff);
-      float spatial  = exp(-dist*dist*55.0);   // 55 = groove width (higher = narrower)
-      float temporal = exp(-u_tAge[i]*1.0);     // 1.0 = how fast groove heals
+      float spatial  = exp(-dist*dist*55.0);
+      float temporal = exp(-u_tAge[i]*1.0);
       disp += u_tVel[i] * spatial * temporal * 0.055;
-      // V-wake: perpendicular ripple either side of groove
       vec2 perp = vec2(-u_tVel[i].y, u_tVel[i].x);
       disp += perp * sin(dist*22.0) * spatial * temporal * 0.012;
     }
 
-    // ── Propagating ring waves ──
-    // These spawn periodically during long movements and expand outward.
-    // Unlike the groove above, these travel away from the origin.
+    // Waves
     for(int i=0; i<6; i++){
       if(i >= u_wCount) break;
       vec2 diff  = (uv - u_wPos[i]) * aspect;
       float dist = length(diff);
       float age  = u_wAge[i];
       float str  = u_wStr[i];
-
-      // Wave front expands at 0.32 units/sec
       float front    = age * 0.32;
-      // Tight band around the expanding front
       float envelope = exp(-pow((dist - front) / 0.045, 2.0));
-      // Fade as it ages
       float fade     = exp(-age * 0.65);
       float wave     = sin(dist*28.0 - age*10.0) * envelope * fade * str;
-
       vec2 dir = dist > 0.0001 ? normalize(diff) : vec2(0.0);
       disp += dir * wave * 0.032;
     }
-
     return disp;
   }
 
   void main(){
     vec2 disp = getDisplacement(v_uv);
-    vec2 sampledUV = clamp(v_uv + disp, 0.0, 1.0);
+    
+    // SCROLLING LOGIC: Wrap the UVs based on scroll position
+    vec2 scrollingUV = v_uv;
+    scrollingUV.y = fract(v_uv.y + (u_scrollY / u_resolution.y));
+    
+    vec2 sampledUV = scrollingUV + disp;
     vec3 scene = texture2D(u_scene, sampledUV).rgb;
 
-    // Shimmer on displaced pixels
     float dispMag = length(disp) * 40.0;
     vec3 shimmer = vec3(0.55, 0.98, 0.84);
     vec3 col = mix(scene, shimmer, clamp(dispMag*0.35, 0.0, 0.28));
 
-    // Vignette
     vec2 vig = v_uv*2.0-1.0;
     col *= 1.0 - dot(vig,vig)*0.18;
 
@@ -226,6 +274,7 @@ gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
 
 const uTime   = gl.getUniformLocation(prog,'u_time');
 const uRes    = gl.getUniformLocation(prog,'u_resolution');
+const uScrollY= gl.getUniformLocation(prog,'u_scrollY');
 const uTPos   = gl.getUniformLocation(prog,'u_tPos');
 const uTVel   = gl.getUniformLocation(prog,'u_tVel');
 const uTAge   = gl.getUniformLocation(prog,'u_tAge');
@@ -241,8 +290,9 @@ gl.activeTexture(gl.TEXTURE0);
 gl.bindTexture(gl.TEXTURE_2D,sceneTex);
 gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
 gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+// CRITICAL: Set to REPEAT so the scrolled texture loops infinitely
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
 gl.uniform1i(uScene,0);
 
 // ═══════════════════════════
@@ -250,25 +300,38 @@ gl.uniform1i(uScene,0);
 // ═══════════════════════════
 const MAX_TRAIL = 24;
 const MAX_WAVES = 6;
-let trail = [];   // {x,y,vx,vy,age}
-let waves = [];   // {x,y,age,str}
+let trail = [];   
+let waves = [];   
 
-// ── TUNING ──
-const TRAIL_INTERVAL  = 16;    // ms — how often to record a trail point
-const SPEED_SCALE     = 0.04;  // scales cursor speed into shader velocity
-const MIN_SPEED       = 0.05;  // px/ms — below this no trail recorded
-
-// Wave spawning: fire a ring wave after moving continuously for this long
-const WAVE_CONTINUOUS_MS  = 300;  // ms of movement before first wave spawns
-const WAVE_REPEAT_MS      = 600;  // ms between subsequent waves during movement
-const WAVE_MIN_SPEED      = 0.4;  // px/ms — must be moving this fast to spawn wave
+const TRAIL_INTERVAL  = 16;    
+const SPEED_SCALE     = 0.04;  
+const MIN_SPEED       = 0.05;  
+const WAVE_CONTINUOUS_MS  = 300;  
+const WAVE_REPEAT_MS      = 600;  
+const WAVE_MIN_SPEED      = 0.4;  
 
 let lastTrailAt    = 0;
 let lastWaveAt     = 0;
-let continuousMs   = 0;    // how long we've been moving above threshold
+let continuousMs   = 0;    
 let lastMX = window.innerWidth/2, lastMY = window.innerHeight/2;
 let lastMoveTime   = performance.now();
 let lastSpeed      = 0;
+
+// CLICK RIPPLE FUNCTION
+function createRipple(x, y, strength = 0.8) {
+  lastWaveAt = performance.now();
+  if (waves.length >= MAX_WAVES) waves.shift();
+  waves.push({ x: x / window.innerWidth, y: y / window.innerHeight, age: 0, str: strength });
+}
+
+// Global click/tap listener
+['mousedown', 'touchstart'].forEach(evtType => {
+  document.addEventListener(evtType, e => {
+    const pos = e.touches ? e.touches[0] : e;
+    const isUI = e.target.closest('a, .btn-cta');
+    createRipple(pos.clientX, pos.clientY, isUI ? 1.2 : 0.7);
+  }, { passive: true });
+});
 
 document.addEventListener('mousemove', e => {
   const now = performance.now();
@@ -279,14 +342,8 @@ document.addEventListener('mousemove', e => {
 
   lastMX = e.clientX; lastMY = e.clientY; lastMoveTime = now; lastSpeed = speed;
 
-  // Track how long we've been moving continuously above wave threshold
-  if(speed >= WAVE_MIN_SPEED){
-    continuousMs += dt;
-  } else {
-    continuousMs = 0; // reset — movement too slow, not continuous enough
-  }
+  if(speed >= WAVE_MIN_SPEED){ continuousMs += dt; } else { continuousMs = 0; }
 
-  // ── Trail point ──
   if(speed >= MIN_SPEED && now - lastTrailAt >= TRAIL_INTERVAL){
     lastTrailAt = now;
     const len = Math.sqrt(dx*dx+dy*dy)||1;
@@ -296,19 +353,16 @@ document.addEventListener('mousemove', e => {
     trail.push({ x:e.clientX/window.innerWidth, y:e.clientY/window.innerHeight, vx, vy, age:0 });
   }
 
-  // ── Propagating wave ──
-  // Only spawn after sustained fast movement, not on short flicks
   const enoughTime  = continuousMs >= WAVE_CONTINUOUS_MS;
   const enoughGap   = now - lastWaveAt >= WAVE_REPEAT_MS;
   if(enoughTime && enoughGap && speed >= WAVE_MIN_SPEED){
     lastWaveAt = now;
-    const str = Math.min(speed / 3.0, 1.0); // stronger wave for faster movement
+    const str = Math.min(speed / 3.0, 1.0); 
     if(waves.length >= MAX_WAVES) waves.shift();
     waves.push({ x:e.clientX/window.innerWidth, y:e.clientY/window.innerHeight, age:0, str });
   }
 });
 
-// ── Resize ──
 function resize(){
   const W=window.innerWidth,H=window.innerHeight;
   glCanvas.width=W; glCanvas.height=H; gl.viewport(0,0,W,H);
@@ -319,24 +373,20 @@ function resize(){
 }
 document.fonts.ready.then(()=>{ resize(); window.addEventListener('resize',resize); });
 
-// ── Render loop ──
 const startTime = performance.now();
 const DT = 1/60;
 
 function render(){
   const t=(performance.now()-startTime)*0.001;
 
-  // Age & cull
   trail.forEach(p=>p.age+=DT); trail=trail.filter(p=>p.age<3.0);
-  waves.forEach(w=>w.age+=DT); waves=waves.filter(w=>w.age<4.0);
+  waves.forEach(w=>w.age+=DT); waves=waves.filter(w=>w.age<2.5); // Settles faster (2.5 vs 4.0)
 
-  // Pack trail
   const tPos=new Float32Array(MAX_TRAIL*2).fill(0);
   const tVel=new Float32Array(MAX_TRAIL*2).fill(0);
   const tAge=new Float32Array(MAX_TRAIL).fill(0);
   trail.forEach((p,i)=>{ tPos[i*2]=p.x; tPos[i*2+1]=p.y; tVel[i*2]=p.vx; tVel[i*2+1]=p.vy; tAge[i]=p.age; });
 
-  // Pack waves
   const wPos=new Float32Array(MAX_WAVES*2).fill(0);
   const wAge=new Float32Array(MAX_WAVES).fill(0);
   const wStr=new Float32Array(MAX_WAVES).fill(0);
@@ -344,6 +394,8 @@ function render(){
 
   gl.uniform1f(uTime,t);
   gl.uniform2f(uRes,glCanvas.width,glCanvas.height);
+  gl.uniform1f(uScrollY, window.scrollY); // Pass current scroll position
+  
   gl.uniform2fv(uTPos,tPos); gl.uniform2fv(uTVel,tVel); gl.uniform1fv(uTAge,tAge); gl.uniform1i(uTCount,trail.length);
   gl.uniform2fv(uWPos,wPos); gl.uniform1fv(uWAge,wAge); gl.uniform1fv(uWStr,wStr); gl.uniform1i(uWCount,waves.length);
 
@@ -366,17 +418,17 @@ class Buoy {
   waveAt(){
     let wx=0,wy=0;
     const rect=this.el.getBoundingClientRect();
+    // Screen coordinates (matches webgl)
     const nx=(rect.left+rect.width/2)/window.innerWidth;
-    const ny=(rect.top+rect.height/2)/window.innerHeight;
+    const ny=(rect.top+rect.height/2)/window.innerHeight; 
     const ar=window.innerWidth/window.innerHeight;
-    // Trail influence
+    
     trail.forEach(p=>{
       const ddx=(nx-p.x)*ar, ddy=ny-p.y;
       const dist=Math.sqrt(ddx*ddx+ddy*ddy);
       const s=Math.exp(-dist*dist*55)*Math.exp(-p.age*1.0);
       wx+=p.vx*s; wy+=p.vy*s;
     });
-    // Wave influence
     waves.forEach(w=>{
       const ddx=(nx-w.x)*ar, ddy=ny-w.y;
       const dist=Math.sqrt(ddx*ddx+ddy*ddy);
