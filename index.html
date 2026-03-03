@@ -45,38 +45,42 @@
   }
   .section * { pointer-events:all; } /* Make contents clickable */
 
-    /* The Glass Container */
+      /* The Glass Container */
    .glass-card {
      background: rgba(11, 36, 32, 0.4); 
      backdrop-filter: blur(8px); 
      -webkit-backdrop-filter: blur(8px); /* For Safari */
      border: 1px solid rgba(82, 240, 180, 0.15);
-     padding: 2rem;
+     padding: 2.5rem; /* Give card content some room to breathe */
      border-radius: 16px;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     gap: 1.2rem;
-     max-width: 450px;
-     width: 100%;
+     display: flex; /* 👈 THE CENTERING MAGIC: Makes internal contents flexible */
+     flex-direction: column; /* Stacks contents in a column */
+     align-items: center; /* 👈 THE CENTERING MAGIC: Centers contents horizontally within the card */
+     gap: 1.2rem; /* Adds even spacing between items */
+     max-width: 450px; /* Limits size so it doesn't get huge */
+     width: 100%; /* For mobile compatibility */
      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+     text-align: center; /* Ensures text is centered even on multiple lines */
+     margin: 0 auto; /* A fallback to ensure the card can center itself on the page */
    }
    
    /* The Image Inside the Card */
    .project-img {
-     width: 100%;
+     width: 100%; /* Takes up full width of the card's inner padded area */
      height: auto;
-     border-radius: 8px;
-     border: 1px solid rgba(82, 240, 180, 0.2);
-     object-fit: cover;
+     border-radius: 8px; /* Slightly more subtle radius for images */
+     border: 1px solid rgba(82, 240, 180, 0.2); /* Subtle glow border */
+     object-fit: cover; /* Ensures the image fills its container without distortion */
+     margin-bottom: 0.5rem; /* Optional spacing */
    }
    
    /* Tweak the text so it fits the card better */
    .glass-card .section-text {
      font-size: 1rem;
      margin-bottom: 0.5rem;
+     color: rgba(200, 237, 232, 0.9); /* Slightly brighter for better contrast on a card */
    }
-  
+     
   .cta-group{display:flex;flex-direction:column;align-items:center;gap:1rem;pointer-events:all;text-align:center;}
   .tagline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(0.85rem,1.6vw,1.2rem);font-style:italic;letter-spacing:0.06em;color:rgba(200,237,232,0.5);}
   .btn-cta{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#0b2420;background:#52f0b4;border:none;padding:0.8rem 2.4rem;cursor:none;text-decoration:none;display:inline-block;transition:background 0.2s,box-shadow 0.2s;}
@@ -126,12 +130,12 @@
     <p class="section-text buoy">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
   </div>
 
-  <div class="glass-card buoy">
+   <div class="glass-card buoy">
    <img src="your-project-image.jpg" class="project-img" alt="Project Alpha">
    <h3 style="color: #c8ede8; font-family: 'Barlow Condensed'; letter-spacing: 0.1em;">Project 01</h3>
    <p class="section-text">A brief description of the ambient UI integration.</p>
    <a href="#" class="btn-cta">View Case Study</a>
-  </div>
+ </div>
 
   <div class="section" id="about">
     <h2 class="section-title buoy">About Me</h2>
