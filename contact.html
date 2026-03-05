@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — Remindr</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;background:#0b2420;cursor:none;scroll-behavior:smooth;}
+
+/* CURSOR */
+.cur{position:fixed;width:8px;height:8px;border-radius:50%;background:#7fffd4;pointer-events:none;z-index:1000;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+.cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(127,255,212,0.4);pointer-events:none;z-index:999;transform:translate(-50%,-50%)}
+
+/* CANVAS */
+#text-source{position:fixed;top:0;left:0;pointer-events:none;opacity:0;z-index:-1;}
+#gl-canvas{position:fixed;inset:0;z-index:1;display:block;pointer-events:none;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;padding:1.6rem 2.5vw;pointer-events:all;z-index:100;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:#c8ede8;text-decoration:none;display:flex;align-items:center;gap:0.45rem;text-shadow:0 0 20px rgba(82,240,180,0.4);flex-shrink:0;}
+.nav-led{width:6px;height:6px;border-radius:50%;background:#52f0b4;box-shadow:0 0 8px #52f0b4;animation:ledp 2.5s ease-in-out infinite;flex-shrink:0;}
+@keyframes ledp{0%,100%{opacity:1}50%{opacity:0.3}}
+.nav-links{display:flex;gap:2.5rem;list-style:none;padding-top:0.15rem;}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,237,232,0.6);text-decoration:none;transition:color 0.2s;pointer-events:all;}
+.nav-links a:hover{color:#c8ede8}
+.nav-links a.active{color:#52f0b4;}
+
+/* UI */
+#ui{position:relative;z-index:10;pointer-events:none;width:100%;}
+
+/* ── HERO ── */
+.hero-section{
+  position:relative;
+  min-height:100vh;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  pointer-events:none;
+}
+.hero-section *{pointer-events:all;}
+.hero-glass{
+  position:absolute;inset:0;
+  background:rgba(11,36,32,0.45);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(82,240,180,0.12);
+  z-index:0;
+}
+.hero-content{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:1.2rem;text-align:center;
+  padding:8rem 6vw 5rem;
+  max-width:800px;margin:0 auto;
+}
+.page-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(82,240,180,0.6);
+  display:flex;align-items:center;gap:0.8rem;
+}
+.page-eyebrow::before,.page-eyebrow::after{content:'';display:block;width:40px;height:1px;background:rgba(82,240,180,0.3);}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,11vw,9rem);
+  color:#c8ede8;letter-spacing:0.03em;line-height:0.88;
+  text-shadow:0 0 60px rgba(82,240,180,0.12);
+}
+.hero-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(1rem,1.8vw,1.25rem);
+  font-style:italic;letter-spacing:0.06em;
+  color:rgba(200,237,232,0.45);max-width:480px;
+}
+
+/* Tab selector */
+.tab-bar{
+  display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;
+  margin-top:1.5rem;
+}
+.tab-btn{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(200,237,232,0.45);
+  background:rgba(82,240,180,0.04);
+  border:1px solid rgba(82,240,180,0.12);
+  padding:0.55rem 1.3rem;cursor:none;
+  transition:all 0.2s;border-radius:2px;
+}
+.tab-btn:hover{color:rgba(200,237,232,0.8);border-color:rgba(82,240,180,0.3);}
+.tab-btn.active{color:#0b2420;background:#52f0b4;border-color:#52f0b4;}
+
+.scroll-cue{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,237,232,0.2);
+  display:flex;flex-direction:column;align-items:center;gap:0.4rem;z-index:1;pointer-events:none;
+}
+.scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(200,237,232,0.25),transparent);animation:el 1.8s ease-in-out infinite;}
+@keyframes el{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ── FORM SECTIONS ── */
+.form-section{
+  position:relative;
+  min-height:100vh;width:100%;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:7rem 6vw;box-sizing:border-box;
+  pointer-events:none;
+}
+.form-section *{pointer-events:all;}
+
+.form-inner{
+  max-width:680px;width:100%;margin:0 auto;
+}
+
+.section-number{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(82,240,180,0.35);margin-bottom:0.6rem;display:block;
+}
+.section-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,5vw,4rem);
+  color:#52f0b4;letter-spacing:0.05em;
+  text-shadow:0 0 20px rgba(82,240,180,0.2);
+}
+.section-desc{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.05rem;color:rgba(200,237,232,0.55);
+  line-height:1.6;margin-top:0.8rem;max-width:520px;
+}
+.section-divider{width:60px;height:1px;background:rgba(82,240,180,0.3);margin:1.4rem 0 2rem;}
+
+/* Glass form card */
+.form-card{
+  background:rgba(11,36,32,0.5);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(82,240,180,0.13);
+  border-radius:14px;padding:2.4rem 2.6rem;
+  display:flex;flex-direction:column;gap:1.3rem;
+}
+
+/* Form fields */
+.field-row{display:flex;gap:1rem;flex-wrap:wrap;}
+.field{display:flex;flex-direction:column;gap:0.4rem;flex:1;min-width:200px;}
+.field label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(82,240,180,0.5);
+}
+.field input,.field textarea,.field select{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;font-weight:600;letter-spacing:0.04em;
+  color:#c8ede8;
+  background:rgba(82,240,180,0.04);
+  border:1px solid rgba(82,240,180,0.15);
+  border-radius:6px;padding:0.75rem 1rem;
+  outline:none;transition:border-color 0.2s,background 0.2s;
+  cursor:none;width:100%;
+  -webkit-appearance:none;
+}
+.field input::placeholder,.field textarea::placeholder{color:rgba(200,237,232,0.2);}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:rgba(82,240,180,0.4);
+  background:rgba(82,240,180,0.07);
+}
+.field textarea{resize:vertical;min-height:110px;line-height:1.5;}
+.field select option{background:#0b2420;color:#c8ede8;}
+
+/* Radio / checkbox group */
+.choice-group{display:flex;flex-direction:column;gap:0.7rem;}
+.choice-item{
+  display:flex;align-items:center;gap:0.85rem;cursor:none;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;font-weight:600;letter-spacing:0.05em;
+  color:rgba(200,237,232,0.65);
+  transition:color 0.2s;
+}
+.choice-item:hover{color:#c8ede8;}
+.choice-item input[type=radio],.choice-item input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;
+  width:16px;height:16px;border-radius:50%;
+  border:1px solid rgba(82,240,180,0.3);
+  background:transparent;cursor:none;flex-shrink:0;
+  transition:all 0.2s;position:relative;
+}
+.choice-item input[type=checkbox]{border-radius:3px;}
+.choice-item input[type=radio]:checked,.choice-item input[type=checkbox]:checked{
+  background:#52f0b4;border-color:#52f0b4;
+  box-shadow:0 0 10px rgba(82,240,180,0.4);
+}
+.choice-item input[type=radio]:checked::after{
+  content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:5px;height:5px;border-radius:50%;background:#0b2420;
+}
+.choice-item input[type=checkbox]:checked::after{
+  content:'✓';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:10px;color:#0b2420;font-weight:900;line-height:1;
+}
+
+/* Submit btn */
+.btn-submit{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:#0b2420;background:#52f0b4;border:none;
+  padding:0.9rem 2.6rem;cursor:none;
+  transition:background 0.2s,box-shadow 0.2s;align-self:flex-start;
+  border-radius:2px;
+}
+.btn-submit:hover{background:#7fffd4;box-shadow:0 0 28px rgba(82,240,180,0.45);}
+.btn-submit:disabled{opacity:0.4;cursor:none;}
+
+/* Success state */
+.form-success{
+  display:none;flex-direction:column;align-items:center;
+  gap:1rem;text-align:center;padding:3rem 2rem;
+}
+.success-icon{font-size:2.5rem;line-height:1;}
+.success-title{
+  font-family:'Bebas Neue',sans-serif;font-size:2.2rem;
+  color:#52f0b4;letter-spacing:0.05em;
+}
+.success-sub{
+  font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;
+  color:rgba(200,237,232,0.55);line-height:1.6;max-width:380px;
+}
+
+/* Investor highlight card */
+.investor-highlight{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+  margin-bottom:1.8rem;
+}
+@media(max-width:520px){.investor-highlight{grid-template-columns:1fr;}}
+.highlight-stat{
+  background:rgba(82,240,180,0.05);
+  border:1px solid rgba(82,240,180,0.12);
+  border-radius:10px;padding:1.2rem 1.4rem;
+}
+.highlight-num{
+  font-family:'Bebas Neue',sans-serif;font-size:2.2rem;
+  color:#52f0b4;letter-spacing:0.04em;line-height:1;
+}
+.highlight-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(200,237,232,0.35);margin-top:0.3rem;
+}
+
+/* Corner meta */
+.cmeta{position:fixed;font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,237,232,0.2);line-height:1.9;pointer-events:none;z-index:50;}
+.cm-bl{bottom:2.5%;left:2.5vw}
+.cm-br{bottom:2.5%;right:2.5vw;text-align:right}
+
+.buoy{display:inline-block;}
+
+/* Section nav dots */
+.section-dots{
+  position:fixed;right:2vw;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:0.7rem;z-index:50;pointer-events:all;
+}
+.dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(200,237,232,0.2);cursor:none;
+  transition:all 0.25s;border:none;padding:0;
+}
+.dot:hover{background:rgba(200,237,232,0.5);transform:scale(1.4);}
+.dot.active{background:#52f0b4;box-shadow:0 0 8px rgba(82,240,180,0.6);transform:scale(1.3);}
+</style>
+</head>
+<body>
+
+<canvas id="text-source"></canvas>
+<canvas id="gl-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo buoy" id="b-logo"><span class="nav-led"></span>REMINDR</a>
+  <ul class="nav-links">
+    <li><a href="#ask" class="buoy" id="nav-ask">Ask Us</a></li>
+    <li><a href="#waitlist" class="buoy" id="nav-waitlist">Early Access</a></li>
+    <li><a href="#investor" class="buoy" id="nav-investor">Investors</a></li>
+    <li><a href="#newsletter" class="buoy" id="nav-newsletter">Newsletter</a></li>
+  </ul>
+</nav>
+
+<!-- Side nav dots -->
+<div class="section-dots">
+  <button class="dot active" onclick="scrollTo('#hero')" title="Top"></button>
+  <button class="dot" onclick="scrollTo('#ask')" title="Ask Us"></button>
+  <button class="dot" onclick="scrollTo('#waitlist')" title="Early Access"></button>
+  <button class="dot" onclick="scrollTo('#investor')" title="Investors"></button>
+  <button class="dot" onclick="scrollTo('#newsletter')" title="Newsletter"></button>
+</div>
+
+<div id="ui">
+
+  <!-- ── HERO ── -->
+  <div class="hero-section" id="hero">
+    <div class="hero-glass"></div>
+    <div class="hero-content">
+      <p class="page-eyebrow buoy">Get In Touch</p>
+      <h1 class="hero-title buoy">Let's<br>Talk.</h1>
+      <p class="hero-sub buoy">Whether you're curious, excited, or ready to invest — there's a place for you here.</p>
+      <div class="tab-bar">
+        <button class="tab-btn active buoy" onclick="jumpTo('#ask')">Ask a Question</button>
+        <button class="tab-btn buoy" onclick="jumpTo('#waitlist')">Early Access</button>
+        <button class="tab-btn buoy" onclick="jumpTo('#investor')">Invest</button>
+        <button class="tab-btn buoy" onclick="jumpTo('#newsletter')">Newsletter</button>
+      </div>
+    </div>
+    <div class="scroll-cue buoy">Scroll to Explore<div class="scroll-line"></div></div>
+  </div>
+
+  <!-- ── ASK A QUESTION ── -->
+  <div class="form-section" id="ask">
+    <div class="form-inner">
+      <span class="section-number buoy">01 — General Inquiry</span>
+      <h2 class="section-title buoy">Ask Us Anything</h2>
+      <p class="section-desc buoy">Curious about the tech? Have a weird idea? Just want to say hi? We read every email.</p>
+      <div class="section-divider"></div>
+
+      <div class="form-card buoy">
+        <div id="ask-form">
+          <div style="display:flex;flex-direction:column;gap:1.3rem;">
+            <div class="field-row">
+              <div class="field">
+                <label>Your Name</label>
+                <input type="text" id="ask-name" placeholder="Adam" autocomplete="off"/>
+              </div>
+              <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="ask-email" placeholder="you@example.com" autocomplete="off"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Subject</label>
+              <select id="ask-subject">
+                <option value="" disabled selected>What's this about?</option>
+                <option>Product Question</option>
+                <option>Technical / Hardware</option>
+                <option>Partnership Opportunity</option>
+                <option>Press / Media</option>
+                <option>Just saying hi :)</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Your Message</label>
+              <textarea id="ask-message" placeholder="Tell us what's on your mind..."></textarea>
+            </div>
+            <button class="btn-submit buoy" onclick="submitForm('ask')">Send Message →</button>
+          </div>
+        </div>
+        <div class="form-success" id="ask-success">
+          <div class="success-icon">💬</div>
+          <div class="success-title">Message Sent</div>
+          <p class="success-sub">We'll get back to you at the email you provided. Usually within a day or two.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EARLY ACCESS ── -->
+  <div class="form-section" id="waitlist">
+    <div class="form-inner">
+      <span class="section-number buoy">02 — Early Access</span>
+      <h2 class="section-title buoy">Get It First</h2>
+      <p class="section-desc buoy">We're building a small first batch. Join the waitlist and you'll be the first to know when Rain Remindr is ready to ship.</p>
+      <div class="section-divider"></div>
+
+      <div class="form-card buoy">
+        <div id="waitlist-form">
+          <div style="display:flex;flex-direction:column;gap:1.3rem;">
+            <div class="field-row">
+              <div class="field">
+                <label>Your Name</label>
+                <input type="text" id="wl-name" placeholder="Your name" autocomplete="off"/>
+              </div>
+              <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="wl-email" placeholder="you@example.com" autocomplete="off"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Which products interest you?</label>
+              <div class="choice-group" style="margin-top:0.3rem;">
+                <label class="choice-item"><input type="checkbox" name="wl-product" value="Rain Remindr"/> Rain Remindr — umbrella reminder</label>
+                <label class="choice-item"><input type="checkbox" name="wl-product" value="Future Products"/> Whatever comes next — keep me posted</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Anything else? (optional)</label>
+              <textarea id="wl-note" placeholder="Feature requests, living situation, anything helpful..." style="min-height:80px;"></textarea>
+            </div>
+            <button class="btn-submit buoy" onclick="submitForm('waitlist')">Join Waitlist →</button>
+          </div>
+        </div>
+        <div class="form-success" id="waitlist-success">
+          <div class="success-icon">🌧️</div>
+          <div class="success-title">You're On The List</div>
+          <p class="success-sub">We'll reach out when the first batch is ready. No spam — just one email when it's time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INVESTOR ── -->
+  <div class="form-section" id="investor">
+    <div class="form-inner">
+      <span class="section-number buoy">03 — Investor Inquiry</span>
+      <h2 class="section-title buoy">Back The Vision</h2>
+      <p class="section-desc buoy">We're early stage, bootstrapped, and building something we genuinely believe in. If ambient computing gets you excited, let's have a conversation.</p>
+      <div class="section-divider"></div>
+
+      <div class="investor-highlight">
+        <div class="highlight-stat buoy">
+          <div class="highlight-num">2026</div>
+          <div class="highlight-label">Founded</div>
+        </div>
+        <div class="highlight-stat buoy">
+          <div class="highlight-num">Pre-Seed</div>
+          <div class="highlight-label">Stage</div>
+        </div>
+        <div class="highlight-stat buoy">
+          <div class="highlight-num">IoT</div>
+          <div class="highlight-label">Category</div>
+        </div>
+        <div class="highlight-stat buoy">
+          <div class="highlight-num">Open</div>
+          <div class="highlight-label">To Conversations</div>
+        </div>
+      </div>
+
+      <div class="form-card buoy">
+        <div id="investor-form">
+          <div style="display:flex;flex-direction:column;gap:1.3rem;">
+            <div class="field-row">
+              <div class="field">
+                <label>Your Name</label>
+                <input type="text" id="inv-name" placeholder="Your name" autocomplete="off"/>
+              </div>
+              <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="inv-email" placeholder="you@fund.com" autocomplete="off"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Organisation / Fund (optional)</label>
+              <input type="text" id="inv-org" placeholder="Acme Ventures, Angel, etc." autocomplete="off"/>
+            </div>
+            <div class="field">
+              <label>What draws you to Remindr?</label>
+              <div class="choice-group" style="margin-top:0.3rem;">
+                <label class="choice-item"><input type="radio" name="inv-interest" value="product"/> The product itself</label>
+                <label class="choice-item"><input type="radio" name="inv-interest" value="market"/> The ambient computing market</label>
+                <label class="choice-item"><input type="radio" name="inv-interest" value="team"/> The team</label>
+                <label class="choice-item"><input type="radio" name="inv-interest" value="all"/> All of the above</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Tell us about yourself</label>
+              <textarea id="inv-message" placeholder="Background, what you're looking for, what you bring to the table..."></textarea>
+            </div>
+            <button class="btn-submit buoy" onclick="submitForm('investor')">Send Inquiry →</button>
+          </div>
+        </div>
+        <div class="form-success" id="investor-success">
+          <div class="success-icon">🤝</div>
+          <div class="success-title">Inquiry Received</div>
+          <p class="success-sub">We'll review your message and be in touch soon. Thanks for believing in what we're building.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NEWSLETTER ── -->
+  <div class="form-section" id="newsletter">
+    <div class="form-inner">
+      <span class="section-number buoy">04 — Newsletter</span>
+      <h2 class="section-title buoy">Stay In The Loop</h2>
+      <p class="section-desc buoy">Low volume, high signal. Development updates, launch news, and the occasional deep-dive into how we build.</p>
+      <div class="section-divider"></div>
+
+      <div class="form-card buoy">
+        <div id="newsletter-form">
+          <div style="display:flex;flex-direction:column;gap:1.3rem;">
+            <div class="field-row">
+              <div class="field">
+                <label>Your Name</label>
+                <input type="text" id="nl-name" placeholder="Your name" autocomplete="off"/>
+              </div>
+              <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="nl-email" placeholder="you@example.com" autocomplete="off"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>What do you want to hear about?</label>
+              <div class="choice-group" style="margin-top:0.3rem;">
+                <label class="choice-item"><input type="checkbox" name="nl-pref" value="dev-updates"/> Development updates &amp; build logs</label>
+                <label class="choice-item"><input type="checkbox" name="nl-pref" value="launches"/> Product launches &amp; availability</label>
+                <label class="choice-item"><input type="checkbox" name="nl-pref" value="tech-deep-dive"/> Tech deep-dives &amp; behind the scenes</label>
+                <label class="choice-item"><input type="checkbox" name="nl-pref" value="everything"/> Everything — send it all</label>
+              </div>
+            </div>
+            <button class="btn-submit buoy" onclick="submitForm('newsletter')">Subscribe →</button>
+          </div>
+        </div>
+        <div class="form-success" id="newsletter-success">
+          <div class="success-icon">📡</div>
+          <div class="success-title">You're Subscribed</div>
+          <p class="success-sub">Good things coming. We keep it low-volume and worth your time — promise.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="cmeta cm-bl">Contact // 2026<br>remind-r.ca</div>
+<div class="cmeta cm-br">GB@remind-r.ca //<br>Get In Touch</div>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<script>
+// ─── FORMSPREE CONFIG ───
+// Replace YOUR_FORM_ID below with your Formspree form ID (e.g. "xpwzgkla")
+// Sign up free at formspree.io → New Form → copy the ID from the endpoint
+const FORMSPREE_ID = 'YOUR_FORM_ID';
+const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
+// ─── FORM SUBMIT ───
+async function submitForm(type) {
+  const configs = {
+    ask: {
+      fields: { name: 'ask-name', email: 'ask-email', subject: 'ask-subject', message: 'ask-message' },
+      tag: 'General Inquiry'
+    },
+    waitlist: {
+      fields: { name: 'wl-name', email: 'wl-email', note: 'wl-note' },
+      checkboxes: 'wl-product',
+      tag: 'Early Access Waitlist'
+    },
+    investor: {
+      fields: { name: 'inv-name', email: 'inv-email', org: 'inv-org', message: 'inv-message' },
+      radios: 'inv-interest',
+      tag: 'Investor Inquiry'
+    },
+    newsletter: {
+      fields: { name: 'nl-name', email: 'nl-email' },
+      checkboxes: 'nl-pref',
+      tag: 'Newsletter Signup'
+    }
+  };
+
+  const cfg = configs[type];
+  const data = { _type: cfg.tag };
+
+  // Collect text fields
+  for (const [key, id] of Object.entries(cfg.fields)) {
+    const el = document.getElementById(id);
+    if (el) data[key] = el.value;
+  }
+
+  // Validate name + email
+  if (!data.name || !data.email) {
+    flashField(data.name ? cfg.fields.email : cfg.fields.name);
+    return;
+  }
+
+  // Collect checkboxes
+  if (cfg.checkboxes) {
+    const checked = [...document.querySelectorAll(`input[name="${cfg.checkboxes}"]:checked`)].map(el => el.value);
+    data.interests = checked.join(', ') || 'None selected';
+  }
+
+  // Collect radios
+  if (cfg.radios) {
+    const selected = document.querySelector(`input[name="${cfg.radios}"]:checked`);
+    data.draw = selected ? selected.value : 'Not specified';
+  }
+
+  // Submit
+  const btn = document.querySelector(`#${type}-form .btn-submit`);
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      document.getElementById(`${type}-form`).style.display = 'none';
+      const success = document.getElementById(`${type}-success`);
+      success.style.display = 'flex';
+      createRipple(window.innerWidth / 2, window.innerHeight / 2, 1.5);
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = 'Try Again'; }
+      // Fallback: open mailto
+      window.location.href = `mailto:GB@remind-r.ca?subject=${encodeURIComponent(cfg.tag + ' from ' + (data.name || 'website'))}&body=${encodeURIComponent(JSON.stringify(data, null, 2))}`;
+    }
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Try Again'; }
+    window.location.href = `mailto:GB@remind-r.ca?subject=${encodeURIComponent(cfg.tag)}&body=Hi Remindr team,`;
+  }
+}
+
+function flashField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = 'rgba(255,100,100,0.6)';
+  el.focus();
+  setTimeout(() => el.style.borderColor = '', 1200);
+}
+
+// ─── SMOOTH SCROLL HELPERS ───
+function jumpTo(hash) {
+  const el = document.querySelector(hash);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+function scrollTo(hash) { jumpTo(hash); }
+
+// ─── NAV / DOT ACTIVE STATE ───
+const sectionIds = ['hero', 'ask', 'waitlist', 'investor', 'newsletter'];
+const navMap = { ask: 'nav-ask', waitlist: 'nav-waitlist', investor: 'nav-investor', newsletter: 'nav-newsletter' };
+const dots = document.querySelectorAll('.dot');
+
+function updateActive() {
+  let current = 'hero';
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - window.innerHeight / 2) current = id;
+  });
+  Object.keys(navMap).forEach(k => {
+    document.getElementById(navMap[k]).classList.toggle('active', k === current);
+  });
+  sectionIds.forEach((id, i) => {
+    dots[i].classList.toggle('active', id === current);
+  });
+}
+window.addEventListener('scroll', updateActive, { passive: true });
+
+// ─── CURSOR ───
+const cur = document.getElementById('cur');
+const curRing = document.getElementById('curRing');
+let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+(function animCur() { rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1; curRing.style.left = rx + 'px'; curRing.style.top = ry + 'px'; requestAnimationFrame(animCur); })();
+document.querySelectorAll('a,.btn-cta,.btn-submit,.btn-ghost,.tab-btn,.dot,.faq-q,input,textarea,select,label.choice-item').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.width = '16px'; cur.style.height = '16px'; curRing.style.width = '44px'; curRing.style.height = '44px'; });
+  el.addEventListener('mouseleave', () => { cur.style.width = '8px'; cur.style.height = '8px'; curRing.style.width = '32px'; curRing.style.height = '32px'; });
+});
+
+// ─── TEXT CANVAS ───
+const textCanvas = document.getElementById('text-source');
+const tCtx = textCanvas.getContext('2d');
+function drawTextScene(w, h) {
+  textCanvas.width = w;
+  let lo = 10, hi = 600;
+  for (let i = 0; i < 20; i++) { const mid = (lo + hi) / 2; tCtx.font = `${mid}px 'Bebas Neue',serif`; tCtx.measureText('REMINDR').width < w * 0.99 ? lo = mid : hi = mid; }
+  const fontSize = lo; const lineH = fontSize * 0.88;
+  const rows = Math.ceil(h / lineH) + 1;
+  textCanvas.height = rows * lineH;
+  tCtx.fillStyle = '#0d2d27'; tCtx.fillRect(0, 0, w, textCanvas.height);
+  const colors = ['rgba(20,90,75,0.55)', 'rgba(22,100,84,0.68)', 'rgba(24,110,92,0.78)', 'rgba(26,122,102,0.88)', 'rgba(28,135,112,0.94)', 'rgba(30,148,122,1.0)', 'rgba(32,160,130,1.0)', 'rgba(34,172,140,1.0)'];
+  tCtx.textAlign = 'center'; tCtx.textBaseline = 'top'; tCtx.font = `${fontSize}px 'Bebas Neue',serif`;
+  for (let r = 0; r < rows; r++) { tCtx.fillStyle = colors[Math.min(r, colors.length - 1)]; tCtx.fillText('REMINDR', w / 2, r * lineH); }
+}
+
+// ─── WEBGL ───
+const glCanvas = document.getElementById('gl-canvas');
+const gl = glCanvas.getContext('webgl', { alpha: false }) || glCanvas.getContext('experimental-webgl', { alpha: false });
+const vsSource = `attribute vec2 a_pos; varying vec2 v_uv; void main(){ v_uv = vec2(a_pos.x*0.5+0.5, 0.5-a_pos.y*0.5); gl_Position = vec4(a_pos,0.0,1.0); }`;
+const fsSource = `
+  precision highp float;
+  varying vec2 v_uv;
+  uniform sampler2D u_scene;
+  uniform float u_time;
+  uniform vec2 u_resolution;
+  uniform float u_scrollY;
+  uniform vec2 u_tPos[24]; uniform vec2 u_tVel[24]; uniform float u_tAge[24]; uniform int u_tCount;
+  uniform vec2 u_wPos[6]; uniform float u_wAge[6]; uniform float u_wStr[6]; uniform int u_wCount;
+  vec2 getDisplacement(vec2 uv){
+    vec2 disp=vec2(0.0); vec2 aspect=vec2(u_resolution.x/u_resolution.y,1.0);
+    disp.x+=sin(uv.x*3.8+u_time*0.6)*0.0012+sin(uv.y*5.2+u_time*0.45)*0.0008;
+    disp.y+=cos(uv.x*4.5+u_time*0.55)*0.0012+cos(uv.y*2.8+u_time*0.7)*0.0008;
+    for(int i=0;i<24;i++){
+      if(i>=u_tCount)break;
+      vec2 diff=(uv-u_tPos[i])*aspect; float dist=length(diff);
+      float spatial=exp(-dist*dist*55.0); float temporal=exp(-u_tAge[i]*1.0);
+      disp+=u_tVel[i]*spatial*temporal*0.055;
+      vec2 perp=vec2(-u_tVel[i].y,u_tVel[i].x);
+      disp+=perp*sin(dist*22.0)*spatial*temporal*0.012;
+    }
+    for(int i=0;i<6;i++){
+      if(i>=u_wCount)break;
+      vec2 diff=(uv-u_wPos[i])*aspect; float dist=length(diff);
+      float age=u_wAge[i]; float str=u_wStr[i]; float front=age*0.32;
+      float envelope=exp(-pow((dist-front)/0.045,2.0));
+      float fade=exp(-age*0.65);
+      float wave=sin(dist*28.0-age*10.0)*envelope*fade*str;
+      vec2 dir=dist>0.0001?normalize(diff):vec2(0.0);
+      disp+=dir*wave*0.032;
+    }
+    return disp;
+  }
+  void main(){
+    vec2 disp=getDisplacement(v_uv);
+    vec2 scrollingUV=v_uv; scrollingUV.y=fract(v_uv.y+(u_scrollY/u_resolution.y));
+    vec2 sampledUV=scrollingUV+disp;
+    vec3 scene=texture2D(u_scene,sampledUV).rgb;
+    float dispMag=length(disp)*40.0;
+    vec3 shimmer=vec3(0.55,0.98,0.84);
+    vec3 col=mix(scene,shimmer,clamp(dispMag*0.35,0.0,0.28));
+    vec2 vig=v_uv*2.0-1.0; col*=1.0-dot(vig,vig)*0.4;
+    float scrollFade=clamp(u_scrollY/(u_resolution.y*2.0),0.0,0.9);
+    vec3 abyssColor=vec3(0.02,0.06,0.05);
+    col=mix(col,abyssColor,scrollFade);
+    gl_FragColor=vec4(col,1.0);
+  }
+`;
+function makeShader(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); return null; } return s; }
+const prog = gl.createProgram();
+gl.attachShader(prog, makeShader(gl.VERTEX_SHADER, vsSource));
+gl.attachShader(prog, makeShader(gl.FRAGMENT_SHADER, fsSource));
+gl.linkProgram(prog); gl.useProgram(prog);
+const quadBuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+const aPos = gl.getAttribLocation(prog, 'a_pos');
+gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+const uTime = gl.getUniformLocation(prog, 'u_time'), uRes = gl.getUniformLocation(prog, 'u_resolution');
+const uScrollY = gl.getUniformLocation(prog, 'u_scrollY');
+const uTPos = gl.getUniformLocation(prog, 'u_tPos'), uTVel = gl.getUniformLocation(prog, 'u_tVel');
+const uTAge = gl.getUniformLocation(prog, 'u_tAge'), uTCount = gl.getUniformLocation(prog, 'u_tCount');
+const uWPos = gl.getUniformLocation(prog, 'u_wPos'), uWAge = gl.getUniformLocation(prog, 'u_wAge');
+const uWStr = gl.getUniformLocation(prog, 'u_wStr'), uWCount = gl.getUniformLocation(prog, 'u_wCount');
+const uScene = gl.getUniformLocation(prog, 'u_scene');
+const sceneTex = gl.createTexture();
+gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.uniform1i(uScene, 0);
+
+// TRAIL + WAVE
+const MAX_TRAIL = 24, MAX_WAVES = 6;
+let trail = [], waves = [];
+const TRAIL_INTERVAL = 16, SPEED_SCALE = 0.04, MIN_SPEED = 0.05;
+const WAVE_CONTINUOUS_MS = 300, WAVE_REPEAT_MS = 600, WAVE_MIN_SPEED = 0.4;
+let lastTrailAt = 0, lastWaveAt = 0, continuousMs = 0;
+let lastMX = window.innerWidth / 2, lastMY = window.innerHeight / 2, lastMoveTime = performance.now();
+
+function createRipple(x, y, strength = 0.8) {
+  lastWaveAt = performance.now();
+  if (waves.length >= MAX_WAVES) waves.shift();
+  waves.push({ x: x / window.innerWidth, y: y / window.innerHeight, age: 0, str: strength });
+}
+['mousedown', 'touchstart'].forEach(evtType => {
+  document.addEventListener(evtType, e => {
+    const pos = e.touches ? e.touches[0] : e;
+    createRipple(pos.clientX, pos.clientY, e.target.closest('a,.btn-submit,.tab-btn,.dot') ? 1.2 : 0.7);
+  }, { passive: true });
+});
+document.addEventListener('mousemove', e => {
+  const now = performance.now(), dt = Math.max(now - lastMoveTime, 1);
+  const dx = e.clientX - lastMX, dy = e.clientY - lastMY;
+  const speed = Math.sqrt(dx * dx + dy * dy) / dt;
+  lastMX = e.clientX; lastMY = e.clientY; lastMoveTime = now;
+  if (speed >= WAVE_MIN_SPEED) continuousMs += dt; else continuousMs = 0;
+  if (speed >= MIN_SPEED && now - lastTrailAt >= TRAIL_INTERVAL) {
+    lastTrailAt = now;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    if (trail.length >= MAX_TRAIL) trail.shift();
+    trail.push({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight, vx: (dx / len) * speed * SPEED_SCALE, vy: (dy / len) * speed * SPEED_SCALE, age: 0 });
+  }
+  if (continuousMs >= WAVE_CONTINUOUS_MS && now - lastWaveAt >= WAVE_REPEAT_MS && speed >= WAVE_MIN_SPEED) {
+    lastWaveAt = now;
+    if (waves.length >= MAX_WAVES) waves.shift();
+    waves.push({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight, age: 0, str: Math.min(speed / 3.0, 1.0) });
+  }
+});
+
+function resize() {
+  const W = window.innerWidth, H = window.innerHeight;
+  glCanvas.width = W; glCanvas.height = H; gl.viewport(0, 0, W, H);
+  drawTextScene(W, H);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas);
+}
+document.fonts.ready.then(() => { resize(); window.addEventListener('resize', resize); });
+
+const startTime = performance.now(), DT = 1 / 60;
+function render() {
+  const t = (performance.now() - startTime) * 0.001;
+  trail.forEach(p => p.age += DT); trail = trail.filter(p => p.age < 3.0);
+  waves.forEach(w => w.age += DT); waves = waves.filter(w => w.age < 2.5);
+  const tPos = new Float32Array(MAX_TRAIL * 2).fill(0), tVel = new Float32Array(MAX_TRAIL * 2).fill(0), tAge = new Float32Array(MAX_TRAIL).fill(0);
+  trail.forEach((p, i) => { tPos[i * 2] = p.x; tPos[i * 2 + 1] = p.y; tVel[i * 2] = p.vx; tVel[i * 2 + 1] = p.vy; tAge[i] = p.age; });
+  const wPos = new Float32Array(MAX_WAVES * 2).fill(0), wAge = new Float32Array(MAX_WAVES).fill(0), wStr = new Float32Array(MAX_WAVES).fill(0);
+  waves.forEach((w, i) => { wPos[i * 2] = w.x; wPos[i * 2 + 1] = w.y; wAge[i] = w.age; wStr[i] = w.str; });
+  gl.uniform1f(uTime, t); gl.uniform2f(uRes, glCanvas.width, glCanvas.height); gl.uniform1f(uScrollY, window.scrollY);
+  gl.uniform2fv(uTPos, tPos); gl.uniform2fv(uTVel, tVel); gl.uniform1fv(uTAge, tAge); gl.uniform1i(uTCount, trail.length);
+  gl.uniform2fv(uWPos, wPos); gl.uniform1fv(uWAge, wAge); gl.uniform1fv(uWStr, wStr); gl.uniform1i(uWCount, waves.length);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  requestAnimationFrame(render);
+}
+render();
+
+// BUOY PHYSICS
+class Buoy {
+  constructor(el) { this.el = el; this.ox = 0; this.oy = 0; this.vx = 0; this.vy = 0; this.k = 0.07; this.damp = 0.75; this.phase = Math.random() * Math.PI * 2; this.freqX = 0.35 + Math.random() * 0.25; this.freqY = 0.28 + Math.random() * 0.2; this.ampX = 0.3 + Math.random() * 0.4; this.ampY = 0.4 + Math.random() * 0.5; }
+  waveAt() { let wx = 0, wy = 0; const rect = this.el.getBoundingClientRect(); const nx = (rect.left + rect.width / 2) / window.innerWidth; const ny = (rect.top + rect.height / 2) / window.innerHeight; const ar = window.innerWidth / window.innerHeight; trail.forEach(p => { const ddx = (nx - p.x) * ar, ddy = ny - p.y; const dist = Math.sqrt(ddx * ddx + ddy * ddy); const s = Math.exp(-dist * dist * 55) * Math.exp(-p.age * 1.0); wx += p.vx * s; wy += p.vy * s; }); waves.forEach(w => { const ddx = (nx - w.x) * ar, ddy = ny - w.y; const dist = Math.sqrt(ddx * ddx + ddy * ddy); const front = w.age * 0.32; const envelope = Math.exp(-Math.pow((dist - front) / 0.045, 2)); const fade = Math.exp(-w.age * 0.65); const mag = Math.sin(dist * 28 - w.age * 10) * envelope * fade * w.str; if (dist > 0.0001) { wx += mag * (ddx / dist) * 0.032; wy += mag * (ddy / dist) * 0.032; } }); return { wx, wy }; }
+  update(t) { const { wx, wy } = this.waveAt(); const tx = Math.sin(t * this.freqX + this.phase) * this.ampX; const ty = Math.sin(t * this.freqY + this.phase * 1.3) * this.ampY; const fx = (-this.ox + tx * 0.35 + wx * 180) * this.k; const fy = (-this.oy + ty * 0.4 + wy * 180) * this.k; this.vx = (this.vx + fx) * this.damp; this.vy = (this.vy + fy) * this.damp; this.ox += this.vx; this.oy += this.vy; this.ox = Math.max(-5, Math.min(5, this.ox)); this.oy = Math.max(-5, Math.min(5, this.oy)); this.el.style.transform = `translate(${this.ox.toFixed(2)}px,${this.oy.toFixed(2)}px)`; }
+}
+const buoys = [];
+document.querySelectorAll('.buoy').forEach(el => buoys.push(new Buoy(el)));
+function animBuoys() { const t = (performance.now() - startTime) * 0.001; buoys.forEach(b => b.update(t)); requestAnimationFrame(animBuoys); }
+animBuoys();
+</script>
+</body>
+</html>
