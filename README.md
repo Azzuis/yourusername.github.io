@@ -1,8 +1,5 @@
 RAIN REMINDR is my project I have been working on slowly now.
 
 TOODOO:
-DESCRIPTION SECTION FOR RAIN REMINDR / PROJECTS IN GENERAL
-
 FAQS ARE WRONG
-
-GET RID OF DRAG WAVE ONLY CLICK WAVE
+Social Links and Headshots
