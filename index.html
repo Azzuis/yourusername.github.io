@@ -40,40 +40,40 @@
     justify-content: center; 
     align-items: center; 
     pointer-events: none; 
-    padding: 7rem 6vw 5rem;
+    padding: 0 6vw;
     box-sizing: border-box; /* Ensures padding doesn't push the width past 100% */
     }
     .section * { pointer-events:all; } /* Make contents clickable */
   
         /* The Glass Container */
      .glass-card {
-    background: rgba(11, 36, 32, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(82, 240, 180, 0.15);
-    padding: 1.8rem;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    max-width: 780px;
-    width: 100%;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    margin: 0 auto;
-  }
+      background: rgba(11, 36, 32, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(82, 240, 180, 0.15);
+      padding: 2.5rem;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      text-align: center;
+      margin: 0 auto;
+    }
    
    /* The Image Inside the Card */
    .project-img {
-  width: 320px;
-  height: 320px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  border: 1px solid rgba(82, 240, 180, 0.2);
-  object-fit: cover;
-  object-position: center;
-}
-   
+   width: 100%;
+   height: auto;
+   border-radius: 8px;
+   border: 1px solid rgba(82, 240, 180, 0.2);
+   object-fit: cover;
+   margin-bottom: 0.5rem;
+ }
+    
    /* Tweak the text so it fits the card better */
    .glass-card .section-text {
      font-size: 1rem;
