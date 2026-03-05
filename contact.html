@@ -531,9 +531,6 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
 
 <script>
 // ─── FORMSPREE CONFIG ───
-// Replace YOUR_FORM_ID below with your Formspree form ID (e.g. "xpwzgkla")
-// Sign up free at formspree.io → New Form → copy the ID from the endpoint
-const FORMSPREE_ID = 'mykngygo';
 const FORMSPREE_URL = `https://formspree.io/f/mykngygo`;
 
 // ─── FORM SUBMIT ───
@@ -563,31 +560,26 @@ async function submitForm(type) {
   const cfg = configs[type];
   const data = { _type: cfg.tag };
 
-  // Collect text fields
   for (const [key, id] of Object.entries(cfg.fields)) {
     const el = document.getElementById(id);
     if (el) data[key] = el.value;
   }
 
-  // Validate name + email
   if (!data.name || !data.email) {
     flashField(data.name ? cfg.fields.email : cfg.fields.name);
     return;
   }
 
-  // Collect checkboxes
   if (cfg.checkboxes) {
     const checked = [...document.querySelectorAll(`input[name="${cfg.checkboxes}"]:checked`)].map(el => el.value);
     data.interests = checked.join(', ') || 'None selected';
   }
 
-  // Collect radios
   if (cfg.radios) {
     const selected = document.querySelector(`input[name="${cfg.radios}"]:checked`);
     data.draw = selected ? selected.value : 'Not specified';
   }
 
-  // Submit
   const btn = document.querySelector(`#${type}-form .btn-submit`);
   if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
 
@@ -605,7 +597,6 @@ async function submitForm(type) {
       createRipple(window.innerWidth / 2, window.innerHeight / 2, 1.5);
     } else {
       if (btn) { btn.disabled = false; btn.textContent = 'Try Again'; }
-      // Fallback: open mailto
       window.location.href = `mailto:GB@remind-r.ca?subject=${encodeURIComponent(cfg.tag + ' from ' + (data.name || 'website'))}&body=${encodeURIComponent(JSON.stringify(data, null, 2))}`;
     }
   } catch(e) {
@@ -756,12 +747,11 @@ gl.uniform1i(uScene, 0);
 const MAX_TRAIL = 24, MAX_WAVES = 6;
 let trail = [], waves = [];
 const TRAIL_INTERVAL = 16, SPEED_SCALE = 0.04, MIN_SPEED = 0.05;
-const WAVE_CONTINUOUS_MS = 300, WAVE_REPEAT_MS = 600, WAVE_MIN_SPEED = 0.4;
-let lastTrailAt = 0, lastWaveAt = 0, continuousMs = 0;
+let lastTrailAt = 0;
 let lastMX = window.innerWidth / 2, lastMY = window.innerHeight / 2, lastMoveTime = performance.now();
 
+// Click-only ripple — no movement pulses
 function createRipple(x, y, strength = 0.8) {
-  lastWaveAt = performance.now();
   if (waves.length >= MAX_WAVES) waves.shift();
   waves.push({ x: x / window.innerWidth, y: y / window.innerHeight, age: 0, str: strength });
 }
@@ -776,17 +766,11 @@ document.addEventListener('mousemove', e => {
   const dx = e.clientX - lastMX, dy = e.clientY - lastMY;
   const speed = Math.sqrt(dx * dx + dy * dy) / dt;
   lastMX = e.clientX; lastMY = e.clientY; lastMoveTime = now;
-  if (speed >= WAVE_MIN_SPEED) continuousMs += dt; else continuousMs = 0;
   if (speed >= MIN_SPEED && now - lastTrailAt >= TRAIL_INTERVAL) {
     lastTrailAt = now;
     const len = Math.sqrt(dx * dx + dy * dy) || 1;
     if (trail.length >= MAX_TRAIL) trail.shift();
     trail.push({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight, vx: (dx / len) * speed * SPEED_SCALE, vy: (dy / len) * speed * SPEED_SCALE, age: 0 });
-  }
-  if (continuousMs >= WAVE_CONTINUOUS_MS && now - lastWaveAt >= WAVE_REPEAT_MS && speed >= WAVE_MIN_SPEED) {
-    lastWaveAt = now;
-    if (waves.length >= MAX_WAVES) waves.shift();
-    waves.push({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight, age: 0, str: Math.min(speed / 3.0, 1.0) });
   }
 });
 
