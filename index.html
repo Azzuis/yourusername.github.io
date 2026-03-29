@@ -426,9 +426,7 @@ let waves = [];
 const TRAIL_INTERVAL  = 16;    
 const SPEED_SCALE     = 0.04;  
 const MIN_SPEED       = 0.05;  
-const WAVE_CONTINUOUS_MS  = 300;  
-const WAVE_REPEAT_MS      = 600;  
-const WAVE_MIN_SPEED      = 0.4;  
+
 
 let lastTrailAt    = 0;
 let lastWaveAt     = 0;
@@ -462,8 +460,6 @@ document.addEventListener('mousemove', e => {
 
   lastMX = e.clientX; lastMY = e.clientY; lastMoveTime = now; lastSpeed = speed;
 
-  if(speed >= WAVE_MIN_SPEED){ continuousMs += dt; } else { continuousMs = 0; }
-
   if(speed >= MIN_SPEED && now - lastTrailAt >= TRAIL_INTERVAL){
     lastTrailAt = now;
     const len = Math.sqrt(dx*dx+dy*dy)||1;
@@ -471,15 +467,6 @@ document.addEventListener('mousemove', e => {
     const vy = (dy/len)*speed*SPEED_SCALE;
     if(trail.length >= MAX_TRAIL) trail.shift();
     trail.push({ x:e.clientX/window.innerWidth, y:e.clientY/window.innerHeight, vx, vy, age:0 });
-  }
-
-  const enoughTime  = continuousMs >= WAVE_CONTINUOUS_MS;
-  const enoughGap   = now - lastWaveAt >= WAVE_REPEAT_MS;
-  if(enoughTime && enoughGap && speed >= WAVE_MIN_SPEED){
-    lastWaveAt = now;
-    const str = Math.min(speed / 3.0, 1.0); 
-    if(waves.length >= MAX_WAVES) waves.shift();
-    waves.push({ x:e.clientX/window.innerWidth, y:e.clientY/window.innerHeight, age:0, str });
   }
 });
 
