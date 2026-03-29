@@ -119,11 +119,24 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 60%;
     display: block;
     transition: transform 0.5s ease;
+    /* Rain Remindr: zoom out a bit so more of the image shows */
+    transform: scale(0.92);
   }
   .project-card:hover .project-card__img {
-    transform: scale(1.03);
+    transform: scale(0.95);
+  }
+
+  /* Garbage Remindr: contain so full image is always visible */
+  .project-card__img--contain {
+    object-fit: contain;
+    background: rgba(11, 36, 32, 0.6);
+    transform: scale(1);
+  }
+  .project-card:hover .project-card__img--contain {
+    transform: scale(1.02);
   }
 
   /* Dark gradient overlay for text readability */
@@ -182,34 +195,10 @@
     min-height: 0;
   }
 
-  /* Right column — stacks garbage card + blurb */
-  .projects-right-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    min-height: 0;
-  }
-
   /* Small card — Garbage Remindr */
   .project-card--small {
     flex: 1;
     min-height: 0;
-  }
-
-  /* Desktop blurb — below garbage card */
-  .projects-blurb-desktop {
-    padding: 1.2rem 1.4rem;
-    background: rgba(11, 36, 32, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(82, 240, 180, 0.15);
-    border-radius: 14px;
-  }
-
-  /* Mobile blurb — above cards, hidden on desktop */
-  .projects-blurb-mobile {
-    display: none;
   }
 
   /* ═══════════════════════════ */
@@ -224,13 +213,6 @@
     .project-card--small {
       flex: none;
       height: 55vw;
-    }
-    .projects-blurb-desktop {
-      display: none;
-    }
-    .projects-blurb-mobile {
-      display: block;
-      margin-bottom: 1rem;
     }
     #projects {
       padding-bottom: 4rem !important;
@@ -272,10 +254,8 @@
   </div>
 
    <div class="section" id="projects" style="padding-bottom: 0;">
-    <h2 class="section-title buoy" style="margin-bottom: 1.5rem;">Projects</h2>
-    
-    <!-- MOBILE ONLY: Blurb above cards -->
-    <p class="section-text buoy projects-blurb-mobile">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
+    <h2 class="section-title buoy" style="margin-bottom: 0.5rem;">Projects</h2>
+    <p class="section-text buoy" style="margin-bottom: 1.5rem;">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
 
     <div class="projects-row">
       
@@ -287,20 +267,13 @@
         <span class="project-card__btn">Learn More</span>
       </a>
 
-      <!-- RIGHT COLUMN: Garbage card + blurb stacked -->
-      <div class="projects-right-col">
-        <a href="garbage-remindr.html" class="project-card project-card--small buoy">
-          <img src="Concept Image.png" class="project-card__img" alt="Garbage Remindr">
-          <div class="project-card__overlay"></div>
-          <h3 class="project-card__title">Garbage Remindr</h3>
-          <span class="project-card__btn">Learn More</span>
-        </a>
-
-        <!-- DESKTOP ONLY: Blurb below garbage card -->
-        <div class="projects-blurb-desktop buoy">
-          <p class="section-text" style="text-align:left;font-size:0.95rem;max-width:none;">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
-        </div>
-      </div>
+      <!-- GARBAGE REMINDR — Smaller right card -->
+      <a href="garbage-remindr.html" class="project-card project-card--small buoy">
+        <img src="Concept Image.png" class="project-card__img project-card__img--contain" alt="Garbage Remindr">
+        <div class="project-card__overlay"></div>
+        <h3 class="project-card__title">Garbage Remindr</h3>
+        <span class="project-card__btn">Learn More</span>
+      </a>
 
     </div>
     </div>
@@ -314,7 +287,7 @@
      <!-- ADAM -->
      <div class="glass-card buoy" style="max-width:380px;text-align:left;align-items:flex-start;">
        <div style="width:100%;height:220px;border-radius:10px;background:rgba(82,240,180,0.06);border:1px solid rgba(82,240,180,0.15);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-         <img src="Early_Design_Selfie.jpeg" alt="Adam Geggie-Bowker" class="headshot-img">
+         <img src="Early Design Selfie.jpeg" alt="Adam Geggie-Bowker" class="headshot-img">
        </div>
        <div style="margin-top:0.8rem;">
          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ede8;letter-spacing:0.06em;line-height:1;">Adam Geggie-Bowker</h3>
@@ -331,7 +304,7 @@
      <!-- DAWSEN -->
      <div class="glass-card buoy" style="max-width:380px;text-align:left;align-items:flex-start;">
        <div style="width:100%;height:220px;border-radius:10px;background:rgba(82,240,180,0.06);border:1px solid rgba(82,240,180,0.15);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-         <img src="daweson_headshot.jfif" alt="Dawsen Foreman" class="headshot-img">
+         <img src="daweson headshot.jfif" alt="Dawsen Foreman" class="headshot-img">
        </div>
        <div style="margin-top:0.8rem;">
          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ede8;letter-spacing:0.06em;line-height:1;">Dawsen Foreman</h3>
