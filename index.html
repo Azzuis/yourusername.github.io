@@ -64,35 +64,7 @@
       margin: 0 auto;
     }
    
-   /* The Image Inside the Card */
-   .project-img {
-   width: 100%;
-   height: auto;
-   border-radius: 8px;
-   border: 1px solid rgba(82, 240, 180, 0.2);
-   object-fit: cover;
-   margin-bottom: 0.5rem;
- }
-    
-   /* Tweak the text so it fits the card better */
-   .glass-card .section-text {
-     font-size: 1rem;
-     margin-bottom: 0.5rem;
-     color: rgba(200, 237, 232, 0.9);
-     padding: 1.6rem;
-   }
-
-   /* Gallery Wrapper to force centering and handle multiple cards */
-  .projects-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 3rem;
-  }
+   /* (legacy gallery styles removed — now using projects-row) */
      
   .cta-group{display:flex;flex-direction:column;align-items:center;gap:1rem;pointer-events:all;text-align:center;}
   .tagline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(0.85rem,1.6vw,1.2rem);font-style:italic;letter-spacing:0.06em;color:rgba(200,237,232,0.5);}
@@ -111,6 +83,159 @@
   /* Typography for new sections */
   .section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem, 6vw, 5rem); color:#52f0b4; letter-spacing:0.05em; text-shadow:0 0 20px rgba(82,240,180,0.2); margin-bottom: 1rem;}
   .section-text { font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; color:rgba(200,237,232,0.7); max-width: 600px; text-align: center; line-height: 1.6;}
+
+  /* ═══════════════════════════ */
+  /* PROJECTS SECTION — NEW     */
+  /* ═══════════════════════════ */
+
+  .projects-row {
+    display: flex;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Fill remaining viewport height below the title */
+    flex: 1;
+    min-height: 0;
+    max-height: calc(100vh - 10rem);
+  }
+
+  /* Shared card styles */
+  .project-card {
+    position: relative;
+    display: block;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(82, 240, 180, 0.15);
+    text-decoration: none;
+    cursor: none;
+    transition: border-color 0.3s;
+  }
+  .project-card:hover {
+    border-color: rgba(82, 240, 180, 0.4);
+  }
+
+  .project-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .project-card:hover .project-card__img {
+    transform: scale(1.03);
+  }
+
+  /* Dark gradient overlay for text readability */
+  .project-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,0.5) 0%,
+      rgba(0,0,0,0.0) 35%,
+      rgba(0,0,0,0.0) 55%,
+      rgba(0,0,0,0.55) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Title — top of card */
+  .project-card__title {
+    position: absolute;
+    top: 1.2rem;
+    left: 1.4rem;
+    z-index: 2;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+    color: #c8ede8;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+
+  /* Button — bottom of card */
+  .project-card__btn {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.4rem;
+    z-index: 2;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0b2420;
+    background: #52f0b4;
+    padding: 0.6rem 1.8rem;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .project-card:hover .project-card__btn {
+    background: #7fffd4;
+    box-shadow: 0 0 20px rgba(82,240,180,0.5);
+  }
+
+  /* Large card — Rain Remindr (left, takes ~60%) */
+  .project-card--large {
+    flex: 1.5;
+    min-height: 0;
+  }
+
+  /* Right column — stacks garbage card + blurb */
+  .projects-right-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    min-height: 0;
+  }
+
+  /* Small card — Garbage Remindr */
+  .project-card--small {
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Desktop blurb — below garbage card */
+  .projects-blurb-desktop {
+    padding: 1.2rem 1.4rem;
+    background: rgba(11, 36, 32, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(82, 240, 180, 0.15);
+    border-radius: 14px;
+  }
+
+  /* Mobile blurb — above cards, hidden on desktop */
+  .projects-blurb-mobile {
+    display: none;
+  }
+
+  /* ═══════════════════════════ */
+  /* MOBILE: Stack cards          */
+  /* ═══════════════════════════ */
+  @media (max-width: 768px) {
+    .projects-row {
+      flex-direction: column;
+      max-height: none;
+    }
+    .project-card--large,
+    .project-card--small {
+      flex: none;
+      height: 55vw;
+    }
+    .projects-blurb-desktop {
+      display: none;
+    }
+    .projects-blurb-mobile {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    #projects {
+      padding-bottom: 4rem !important;
+    }
+  }
 
   /* Headshot styling */
   .headshot-img {
@@ -146,26 +271,37 @@
     <div class="cmeta cm-br">Est. 2026 //<br>Design No. 01</div>
   </div>
 
-   <div class="section" id="projects" style="padding-bottom: 8rem;">
-    <h2 class="section-title buoy">Projects</h2>
-    <p class="section-text buoy">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
+   <div class="section" id="projects" style="padding-bottom: 0;">
+    <h2 class="section-title buoy" style="margin-bottom: 1.5rem;">Projects</h2>
     
-    <div class="projects-gallery">
+    <!-- MOBILE ONLY: Blurb above cards -->
+    <p class="section-text buoy projects-blurb-mobile">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
+
+    <div class="projects-row">
       
-      <div class="glass-card buoy">
-        <img src="image.png" class="project-img" alt="Rain Remindr">
-        <h3 style="color: #c8ede8; font-family: 'Barlow Condensed'; letter-spacing: 0.1em;">Rain Remindr</h3>
-        <p class="section-text">A subtle remindr to grab your umbrella on your way out the door :)</p>
-        <a href="rain-remindr.html" class="btn-cta">Learn More</a>
+      <!-- RAIN REMINDR — Large left card -->
+      <a href="rain-remindr.html" class="project-card project-card--large buoy">
+        <img src="image.png" class="project-card__img" alt="Rain Remindr">
+        <div class="project-card__overlay"></div>
+        <h3 class="project-card__title">Rain Remindr</h3>
+        <span class="project-card__btn">Learn More</span>
+      </a>
+
+      <!-- RIGHT COLUMN: Garbage card + blurb stacked -->
+      <div class="projects-right-col">
+        <a href="garbage-remindr.html" class="project-card project-card--small buoy">
+          <img src="Concept Image.png" class="project-card__img" alt="Garbage Remindr">
+          <div class="project-card__overlay"></div>
+          <h3 class="project-card__title">Garbage Remindr</h3>
+          <span class="project-card__btn">Learn More</span>
+        </a>
+
+        <!-- DESKTOP ONLY: Blurb below garbage card -->
+        <div class="projects-blurb-desktop buoy">
+          <p class="section-text" style="text-align:left;font-size:0.95rem;max-width:none;">Explore our latest integrations bringing ambient computing into the home environment. Seamless, invisible, and strictly there when you need it.</p>
+        </div>
       </div>
 
-      <div class="glass-card buoy">
-        <img src="Concept Image.png" class="project-img" alt="Garbage Remindr">
-        <h3 style="color: #c8ede8; font-family: 'Barlow Condensed'; letter-spacing: 0.1em;">Garbage Remindr</h3>
-        <p class="section-text">A subtle remindr to take the bins out before pickup day :)</p>
-        <a href="garbage-remindr.html" class="btn-cta">Learn More</a>
-      </div>
-      
     </div>
     </div>
 
@@ -178,7 +314,7 @@
      <!-- ADAM -->
      <div class="glass-card buoy" style="max-width:380px;text-align:left;align-items:flex-start;">
        <div style="width:100%;height:220px;border-radius:10px;background:rgba(82,240,180,0.06);border:1px solid rgba(82,240,180,0.15);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-         <img src="Early Design Selfie.jpeg" alt="Adam Geggie-Bowker" class="headshot-img">
+         <img src="Early_Design_Selfie.jpeg" alt="Adam Geggie-Bowker" class="headshot-img">
        </div>
        <div style="margin-top:0.8rem;">
          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ede8;letter-spacing:0.06em;line-height:1;">Adam Geggie-Bowker</h3>
@@ -195,7 +331,7 @@
      <!-- DAWSEN -->
      <div class="glass-card buoy" style="max-width:380px;text-align:left;align-items:flex-start;">
        <div style="width:100%;height:220px;border-radius:10px;background:rgba(82,240,180,0.06);border:1px solid rgba(82,240,180,0.15);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-         <img src="daweson headshot.jfif" alt="Dawsen Foreman" class="headshot-img">
+         <img src="daweson_headshot.jfif" alt="Dawsen Foreman" class="headshot-img">
        </div>
        <div style="margin-top:0.8rem;">
          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ede8;letter-spacing:0.06em;line-height:1;">Dawsen Foreman</h3>
