@@ -129,16 +129,6 @@
     transform: scale(0.95);
   }
 
-  /* Garbage Remindr: contain so full image is always visible */
-  .project-card__img--contain {
-    object-fit: contain;
-    background: rgba(11, 36, 32, 0.6);
-    transform: scale(1);
-  }
-  .project-card:hover .project-card__img--contain {
-    transform: scale(1.02);
-  }
-
   /* Dark gradient overlay for text readability */
   .project-card__overlay {
     position: absolute;
@@ -195,10 +185,11 @@
     min-height: 0;
   }
 
-  /* Small card — Garbage Remindr */
+  /* Small card — Garbage Remindr, locked aspect ratio */
   .project-card--small {
     flex: 1;
     min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   /* ═══════════════════════════ */
@@ -269,7 +260,7 @@
 
       <!-- GARBAGE REMINDR — Smaller right card -->
       <a href="garbage-remindr.html" class="project-card project-card--small buoy">
-        <img src="Concept Image.png" class="project-card__img project-card__img--contain" alt="Garbage Remindr">
+        <img src="Concept Image.png" class="project-card__img" alt="Garbage Remindr">
         <div class="project-card__overlay"></div>
         <h3 class="project-card__title">Garbage Remindr</h3>
         <span class="project-card__btn">Learn More</span>
