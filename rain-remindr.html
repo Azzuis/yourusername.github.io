@@ -30,7 +30,7 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
 /* UI LAYER */
 #ui{position:relative;z-index:10;pointer-events:none;width:100%;}
 
-/* ── HERO: full-screen glass island ── */
+/* ── HERO ── */
 .hero-section{
   position:relative;
   min-height:100vh;
@@ -42,7 +42,6 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
   pointer-events:none;
 }
 .hero-section *{pointer-events:all;}
-
 .hero-glass{
   position:absolute;
   inset:0;
@@ -52,7 +51,6 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
   border-bottom:1px solid rgba(82,240,180,0.12);
   z-index:0;
 }
-
 .hero-content{
   position:relative;
   z-index:1;
@@ -65,271 +63,175 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
   max-width:900px;
   margin:0 auto;
 }
-
 .project-eyebrow{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:0.72rem;
-  font-weight:700;
-  letter-spacing:0.25em;
-  text-transform:uppercase;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;
   color:rgba(82,240,180,0.6);
-  display:flex;
-  align-items:center;
-  gap:0.8rem;
+  display:flex;align-items:center;gap:0.8rem;
 }
-.project-eyebrow::before,.project-eyebrow::after{
-  content:'';display:block;width:40px;height:1px;background:rgba(82,240,180,0.3);
-}
-
+.project-eyebrow::before,.project-eyebrow::after{content:'';display:block;width:40px;height:1px;background:rgba(82,240,180,0.3);}
 .hero-title{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(4rem,10vw,8rem);
-  color:#c8ede8;
-  letter-spacing:0.04em;
-  line-height:0.9;
+  font-size:clamp(4rem,10vw,8rem);color:#c8ede8;letter-spacing:0.04em;line-height:0.9;
   text-shadow:0 0 60px rgba(82,240,180,0.15);
 }
 .hero-title span{color:#52f0b4;}
-
 .hero-tagline{
   font-family:'Barlow Condensed',sans-serif;
-  font-size:clamp(1rem,2vw,1.35rem);
-  font-style:italic;
-  letter-spacing:0.06em;
-  color:rgba(200,237,232,0.55);
-  max-width:560px;
+  font-size:clamp(1rem,2vw,1.35rem);font-style:italic;letter-spacing:0.06em;
+  color:rgba(200,237,232,0.55);max-width:560px;
 }
-
 .hero-img{
-  width:100%;
-  max-width:520px;
-  border-radius:12px;
+  width:100%;max-width:520px;border-radius:12px;
   border:1px solid rgba(82,240,180,0.18);
   box-shadow:0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(82,240,180,0.06);
   margin-top:1rem;
 }
-
-.hero-meta{
-  display:flex;
-  gap:3rem;
-  margin-top:0.5rem;
-}
-.meta-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:0.3rem;
-}
-.meta-label{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:0.62rem;
-  font-weight:700;
-  letter-spacing:0.2em;
-  text-transform:uppercase;
-  color:rgba(200,237,232,0.25);
-}
-.meta-value{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:0.95rem;
-  font-weight:600;
-  letter-spacing:0.1em;
-  color:rgba(200,237,232,0.7);
-}
-
+.hero-meta{display:flex;gap:3rem;margin-top:0.5rem;}
+.meta-item{display:flex;flex-direction:column;align-items:center;gap:0.3rem;}
+.meta-label{font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,237,232,0.25);}
+.meta-value{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.1em;color:rgba(200,237,232,0.7);}
 .scroll-cue{
-  position:absolute;
-  bottom:2.5rem;
-  left:50%;
-  transform:translateX(-50%);
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:0.6rem;
-  font-weight:700;
-  letter-spacing:0.2em;
-  text-transform:uppercase;
-  color:rgba(200,237,232,0.2);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:0.4rem;
-  z-index:1;
-  pointer-events:none;
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,237,232,0.2);
+  display:flex;flex-direction:column;align-items:center;gap:0.4rem;z-index:1;pointer-events:none;
 }
 .scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(200,237,232,0.25),transparent);animation:el 1.8s ease-in-out infinite;}
 @keyframes el{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
 /* ── CONTENT SECTIONS ── */
 .section{
-  position:relative;
-  min-height:100vh;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  pointer-events:none;
-  padding:7rem 6vw;
-  box-sizing:border-box;
+  position:relative;min-height:100vh;width:100%;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  pointer-events:none;padding:7rem 6vw;box-sizing:border-box;
 }
 .section *{pointer-events:all;}
+.section-inner{max-width:800px;width:100%;margin:0 auto;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:#52f0b4;letter-spacing:0.05em;text-shadow:0 0 20px rgba(82,240,180,0.2);margin-bottom:0.4rem;}
+.section-number{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(82,240,180,0.35);margin-bottom:0.8rem;display:block;}
+.section-divider{width:60px;height:1px;background:rgba(82,240,180,0.3);margin:1.2rem 0 1.8rem;}
 
-.section-inner{
-  max-width:800px;
-  width:100%;
-  margin:0 auto;
-}
-
-.section-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.5rem,5vw,4rem);
-  color:#52f0b4;
-  letter-spacing:0.05em;
-  text-shadow:0 0 20px rgba(82,240,180,0.2);
-  margin-bottom:0.4rem;
-}
-.section-number{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:0.65rem;
-  font-weight:700;
-  letter-spacing:0.25em;
-  text-transform:uppercase;
-  color:rgba(82,240,180,0.35);
-  margin-bottom:0.8rem;
-  display:block;
-}
-.section-divider{
-  width:60px;height:1px;
-  background:rgba(82,240,180,0.3);
-  margin:1.2rem 0 1.8rem;
-}
-
-/* BLOG ENTRIES */
+/* ── DEV LOG ENTRIES ── */
 .blog-feed{display:flex;flex-direction:column;gap:2rem;margin-top:2rem;}
 .blog-entry{
-  background:rgba(11,36,32,0.45);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  border:1px solid rgba(82,240,180,0.12);
-  border-radius:12px;
+  background:rgba(11,36,32,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(82,240,180,0.12);border-radius:12px;
   padding:2rem 2.2rem;
+  display:flex;gap:1.8rem;align-items:flex-start;
   transition:border-color 0.2s, box-shadow 0.2s;
 }
-.blog-entry:hover{
-  border-color:rgba(82,240,180,0.28);
-  box-shadow:0 12px 40px rgba(0,0,0,0.35);
+.blog-entry:hover{border-color:rgba(82,240,180,0.28);box-shadow:0 12px 40px rgba(0,0,0,0.35);}
+.blog-thumb{
+  width:160px;min-width:160px;height:120px;
+  border-radius:8px;overflow:hidden;
+  border:1px solid rgba(82,240,180,0.15);
+  background:rgba(82,240,180,0.04);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
 }
-.blog-date{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:0.65rem;
-  font-weight:700;
-  letter-spacing:0.2em;
-  text-transform:uppercase;
-  color:rgba(82,240,180,0.5);
-  margin-bottom:0.5rem;
+.blog-thumb img{width:100%;height:100%;object-fit:cover;}
+.blog-thumb-placeholder{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;
+  letter-spacing:0.18em;text-transform:uppercase;color:rgba(82,240,180,0.25);
 }
-.blog-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.8rem;
-  color:#c8ede8;
-  letter-spacing:0.05em;
-  margin-bottom:0.7rem;
-}
-.blog-body{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.05rem;
-  color:rgba(200,237,232,0.65);
-  line-height:1.65;
-}
-.blog-tag{
-  display:inline-block;
-  margin-top:1rem;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:0.65rem;
-  font-weight:700;
-  letter-spacing:0.18em;
-  text-transform:uppercase;
-  color:#0b2420;
-  background:#52f0b4;
-  padding:0.25rem 0.75rem;
-  border-radius:2px;
-}
+.blog-text{flex:1;min-width:0;}
+.blog-date{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(82,240,180,0.5);margin-bottom:0.5rem;}
+.blog-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ede8;letter-spacing:0.05em;margin-bottom:0.7rem;}
+.blog-body{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;color:rgba(200,237,232,0.65);line-height:1.65;}
+.blog-tag{display:inline-block;margin-top:1rem;font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0b2420;background:#52f0b4;padding:0.25rem 0.75rem;border-radius:2px;}
 
-/* FAQ */
-.faq-list{display:flex;flex-direction:column;gap:0;margin-top:2rem;}
-.faq-item{
-  border-bottom:1px solid rgba(82,240,180,0.1);
-  overflow:hidden;
+/* Hidden entries + show more */
+.blog-entry.hidden{display:none;}
+.btn-show-more{
+  align-self:center;margin-top:1.5rem;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(200,237,232,0.5);background:none;
+  border:1px solid rgba(82,240,180,0.2);
+  padding:0.7rem 2rem;cursor:none;
+  transition:all 0.2s;border-radius:2px;
 }
+.btn-show-more:hover{color:#c8ede8;border-color:rgba(82,240,180,0.5);}
+
+/* ── TIMELINE ── */
+.timeline-track{
+  position:relative;
+  margin-top:2.5rem;
+  padding-left:2rem;
+  border-left:2px solid rgba(82,240,180,0.15);
+}
+.timeline-node{
+  position:relative;
+  padding:0 0 2.5rem 1.8rem;
+}
+.timeline-node:last-child{padding-bottom:0;}
+.timeline-dot{
+  position:absolute;
+  left:-2.55rem;top:0.15rem;
+  width:12px;height:12px;
+  border-radius:50%;
+  background:rgba(82,240,180,0.2);
+  border:2px solid rgba(82,240,180,0.4);
+}
+.timeline-node.done .timeline-dot{background:#52f0b4;border-color:#52f0b4;box-shadow:0 0 8px rgba(82,240,180,0.4);}
+.timeline-node.active .timeline-dot{
+  background:#0b2420;border-color:#52f0b4;box-shadow:0 0 12px rgba(82,240,180,0.5);
+  animation:tpulse 2s ease-in-out infinite;
+}
+@keyframes tpulse{0%,100%{box-shadow:0 0 8px rgba(82,240,180,0.4)}50%{box-shadow:0 0 18px rgba(82,240,180,0.7)}}
+.timeline-stage{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;color:rgba(82,240,180,0.5);
+  margin-bottom:0.3rem;
+}
+.timeline-label{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
+  color:#c8ede8;letter-spacing:0.04em;line-height:1.1;
+}
+.timeline-node.future .timeline-label{color:rgba(200,237,232,0.3);}
+.timeline-node.future .timeline-stage{color:rgba(82,240,180,0.2);}
+.timeline-desc{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;
+  color:rgba(200,237,232,0.5);line-height:1.5;margin-top:0.4rem;
+}
+.timeline-node.active .timeline-desc{color:rgba(200,237,232,0.65);}
+
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:0;margin-top:2rem;}
+.faq-item{border-bottom:1px solid rgba(82,240,180,0.1);overflow:hidden;}
 .faq-item:first-child{border-top:1px solid rgba(82,240,180,0.1);}
 .faq-q{
-  width:100%;
-  background:none;
-  border:none;
-  cursor:none;
-  padding:1.4rem 0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.15rem;
-  font-weight:700;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:rgba(200,237,232,0.8);
-  text-align:left;
-  gap:1rem;
-  transition:color 0.2s;
+  width:100%;background:none;border:none;cursor:none;padding:1.4rem 0;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;color:rgba(200,237,232,0.8);
+  text-align:left;gap:1rem;transition:color 0.2s;
 }
 .faq-q:hover{color:#c8ede8;}
 .faq-q.open{color:#52f0b4;}
-.faq-icon{
-  font-size:1.2rem;
-  color:rgba(82,240,180,0.5);
-  flex-shrink:0;
-  transition:transform 0.3s;
-  font-style:normal;
-}
+.faq-icon{font-size:1.2rem;color:rgba(82,240,180,0.5);flex-shrink:0;transition:transform 0.3s;font-style:normal;}
 .faq-q.open .faq-icon{transform:rotate(45deg);}
 .faq-a{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.35s ease, padding 0.3s;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.05rem;
-  color:rgba(200,237,232,0.6);
-  line-height:1.65;
-  padding-bottom:0;
+  max-height:0;overflow:hidden;transition:max-height 0.35s ease, padding 0.3s;
+  font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;
+  color:rgba(200,237,232,0.6);line-height:1.65;padding-bottom:0;
 }
 .faq-a.open{max-height:300px;padding-bottom:1.4rem;}
 
-@media(max-width:600px){.desc-grid{grid-template-columns:1fr!important;}}
-/* CTA section */
+/* ── CTA ── */
 .cta-section{
-  position:relative;
-  min-height:60vh;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:5rem 6vw;
-  pointer-events:none;
+  position:relative;min-height:60vh;width:100%;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:5rem 6vw;pointer-events:none;
 }
 .cta-section *{pointer-events:all;}
-.cta-glass{
-  position:absolute;
-  inset:0;
-  background:rgba(11,36,32,0.4);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  border-top:1px solid rgba(82,240,180,0.1);
-  z-index:0;
-}
+.cta-glass{position:absolute;inset:0;background:rgba(11,36,32,0.4);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(82,240,180,0.1);z-index:0;}
 .cta-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
 .cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:#c8ede8;letter-spacing:0.04em;}
 .cta-sub{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-style:italic;color:rgba(200,237,232,0.45);letter-spacing:0.05em;}
 
-/* BTN */
+/* BUTTONS */
 .btn-cta{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#0b2420;background:#52f0b4;border:none;padding:0.8rem 2.4rem;cursor:none;text-decoration:none;display:inline-block;transition:background 0.2s,box-shadow 0.2s;}
 .btn-cta:hover{background:#7fffd4;box-shadow:0 0 28px rgba(82,240,180,0.5)}
 .btn-ghost{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,237,232,0.6);background:none;border:1px solid rgba(200,237,232,0.2);padding:0.8rem 2.4rem;cursor:none;text-decoration:none;display:inline-block;transition:all 0.2s;}
@@ -342,6 +244,13 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
 .cm-br{bottom:2.5%;right:2.5vw;text-align:right}
 
 .buoy{display:inline-block;}
+
+@media(max-width:600px){
+  .desc-grid{grid-template-columns:1fr!important;}
+  .blog-entry{flex-direction:column;}
+  .blog-thumb{width:100%;min-width:unset;height:180px;}
+  .hero-meta{gap:1.5rem;}
+}
 </style>
 </head>
 <body>
@@ -354,109 +263,189 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
   <ul class="nav-links">
     <li><a href="#hero" class="buoy active" id="nav-hero">Rain Remindr</a></li>
     <li><a href="#about" class="buoy" id="nav-about">About</a></li>
-    <li><a href="#blog" class="buoy" id="nav-blog">Progress Blog</a></li>
+    <li><a href="#blog" class="buoy" id="nav-blog">Dev Log</a></li>
+    <li><a href="#timeline" class="buoy" id="nav-timeline">Roadmap</a></li>
     <li><a href="#faq" class="buoy" id="nav-faq">FAQs</a></li>
   </ul>
 </nav>
 
 <div id="ui">
 
-  <!-- ── HERO ── -->
+  <!-- ══ HERO ══ -->
   <div class="hero-section" id="hero">
     <div class="hero-glass"></div>
     <div class="hero-content">
       <p class="project-eyebrow buoy">Project No. 01</p>
       <h1 class="hero-title buoy">Rain<br><span>Remindr</span></h1>
-      <p class="hero-tagline buoy">A subtle nudge to grab your umbrella on your way out the door.</p>
+      <p class="hero-tagline buoy">A subtle glow by your front door that tells you when to grab your umbrella — or your sunscreen.</p>
       <img src="image.png" alt="Rain Remindr device" class="hero-img buoy"/>
       <div class="hero-meta">
         <div class="meta-item buoy">
           <span class="meta-label">Status</span>
-          <span class="meta-value">In Development</span>
+          <span class="meta-value">Prototyping</span>
         </div>
         <div class="meta-item buoy">
           <span class="meta-label">Category</span>
           <span class="meta-value">Smart IoT</span>
         </div>
         <div class="meta-item buoy">
-          <span class="meta-label">Est.</span>
-          <span class="meta-value">2026</span>
+          <span class="meta-label">Power</span>
+          <span class="meta-value">USB-C / 12V</span>
         </div>
       </div>
     </div>
+    <div class="scroll-cue">Scroll<div class="scroll-line"></div></div>
   </div>
-  <!-- ── DESCRIPTION ── -->
-<div class="section" id="about">
-  <div class="section-inner">
-    <span class="section-number buoy">02 — What It Is</span>
-    <h2 class="section-title buoy">The Idea</h2>
-    <div class="section-divider"></div>
 
-    <div style="display:flex;flex-direction:column;gap:2.5rem;">
-
-      <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.1rem,2vw,1.35rem);color:rgba(200,237,232,0.75);line-height:1.7;max-width:640px;" class="buoy">
-        Rain Remindr is a small, always-on device that lives by your front door. No screen. No app to open. Just a soft LED glow that tells you — before you leave — whether to grab your umbrella.
-      </p>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;" class="desc-grid">
-        <div class="highlight-stat buoy">
-          <div class="highlight-num">☁️</div>
-          <div class="highlight-label">Reads the forecast</div>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;color:rgba(200,237,232,0.45);line-height:1.5;margin-top:0.5rem;">Polls hourly precipitation data for your exact location, every 15 minutes.</p>
-        </div>
-        <div class="highlight-stat buoy">
-          <div class="highlight-num">💡</div>
-          <div class="highlight-label">Glows when it matters</div>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;color:rgba(200,237,232,0.45);line-height:1.5;margin-top:0.5rem;">A gentle pulse for light rain. A hard steady glow for heavy. Impossible to miss, never annoying.</p>
-        </div>
-        <div class="highlight-stat buoy">
-          <div class="highlight-num">🔇</div>
-          <div class="highlight-label">Nothing else</div>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;color:rgba(200,237,232,0.45);line-height:1.5;margin-top:0.5rem;">No notifications. No subscription. No data sold. It just sits there and does one thing well.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-  <!-- ── PROGRESS BLOG ── -->
-  <div class="section" id="blog">
+  <!-- ══ DESCRIPTION ══ -->
+  <div class="section" id="about">
     <div class="section-inner">
-      <span class="section-number buoy">03 — Progress Blog</span>
-      <h2 class="section-title buoy">Development Log</h2>
+      <span class="section-number buoy">02 — What It Is</span>
+      <h2 class="section-title buoy">The Idea</h2>
       <div class="section-divider"></div>
 
-      <div class="blog-feed">
+      <div style="display:flex;flex-direction:column;gap:2.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.1rem,2vw,1.35rem);color:rgba(200,237,232,0.75);line-height:1.7;max-width:640px;" class="buoy">
+          Rain Remindr is a small, always-on LED device that lives by your front door. It reads the forecast for your location and glows to tell you what's coming — rain or shine. Its brightness and colour scale with intensity: a soft blue for a light drizzle, a bright blue for a downpour, warm tones for UV. No screen. No app. Just plug it in and glance at it on your way out.
+        </p>
 
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;" class="desc-grid">
+          <div class="buoy" style="padding:1.2rem;background:rgba(11,36,32,0.4);border:1px solid rgba(82,240,180,0.1);border-radius:10px;">
+            <div style="font-size:1.6rem;margin-bottom:0.5rem;">🌧️</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(82,240,180,0.6);margin-bottom:0.5rem;">Rain & UV Aware</div>
+            <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;color:rgba(200,237,232,0.45);line-height:1.5;">Colour and brightness scale with precipitation chance and UV index. Customizable colour palette — make it yours.</p>
+          </div>
+          <div class="buoy" style="padding:1.2rem;background:rgba(11,36,32,0.4);border:1px solid rgba(82,240,180,0.1);border-radius:10px;">
+            <div style="font-size:1.6rem;margin-bottom:0.5rem;">⏰</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(82,240,180,0.6);margin-bottom:0.5rem;">Your Schedule</div>
+            <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;color:rgba(200,237,232,0.45);line-height:1.5;">Set your sample window (default 8 hours) and a goodnight period. It only looks at weather that matters to you.</p>
+          </div>
+          <div class="buoy" style="padding:1.2rem;background:rgba(11,36,32,0.4);border:1px solid rgba(82,240,180,0.1);border-radius:10px;">
+            <div style="font-size:1.6rem;margin-bottom:0.5rem;">🔌</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(82,240,180,0.6);margin-bottom:0.5rem;">Plug In & Go</div>
+            <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;color:rgba(200,237,232,0.45);line-height:1.5;">Powered by USB-C or 12V barrel jack. Connects to home WiFi. One-time setup through a web interface on the device itself.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DEV LOG ══ -->
+  <div class="section" id="blog" style="min-height:auto;">
+    <div class="section-inner">
+      <span class="section-number buoy">03 — Development Log</span>
+      <h2 class="section-title buoy">Dev Log</h2>
+      <div class="section-divider"></div>
+
+      <div class="blog-feed" id="blog-feed">
+
+        <!-- ENTRY 003 — visible by default -->
         <div class="blog-entry buoy">
-          <div class="blog-date">March 2026 — Entry 003</div>
-          <div class="blog-title">Enclosure Prototype Complete</div>
-          <p class="blog-body">The first physical enclosure is off the printer. We went with a frosted white PLA to diffuse the LED light more evenly — the effect is exactly what we were after. Soft, ambient, impossible to ignore but never intrusive. Next up: weatherproofing tests before we finalize the design.</p>
-          <span class="blog-tag">Hardware</span>
+          <div class="blog-thumb">
+            <span class="blog-thumb-placeholder">Photo Soon</span>
+          </div>
+          <div class="blog-text">
+            <div class="blog-date">March 2026 — Entry 003</div>
+            <div class="blog-title">Custom PCB — Final Review</div>
+            <p class="blog-body">The Rain Remindr Prototype Board is in its final schematic review stage. ESP32-C3-MINI-1 driving WS2811 LEDs, AP63203WU buck converter stepping 12V down to 3.3V, USB-C with ESD protection. Four-layer stackup targeting JLCPCB. A few open items: confirming CC pull-down resistors at 5.1kΩ and adding P-channel MOSFET reverse polarity protection on the barrel jack input.</p>
+            <span class="blog-tag">PCB Design</span>
+          </div>
         </div>
 
+        <!-- ENTRY 002 — visible by default -->
         <div class="blog-entry buoy">
-          <div class="blog-date">February 2026 — Entry 002</div>
-          <div class="blog-title">Weather API Integration</div>
-          <p class="blog-body">Landed on Open-Meteo for our weather data source — it's free, accurate to the hour, and doesn't require an API key for basic use. The device now polls precipitation probability every 15 minutes and maps it to LED intensity. 30% chance? A gentle pulse. 80%? It glows hard. You can't miss it.</p>
-          <span class="blog-tag">Software</span>
+          <div class="blog-thumb">
+            <span class="blog-thumb-placeholder">Photo Soon</span>
+          </div>
+          <div class="blog-text">
+            <div class="blog-date">February 2026 — Entry 002</div>
+            <div class="blog-title">Firmware Comes Alive</div>
+            <p class="blog-body">Embedded software is functional. Built from scratch in PlatformIO/Arduino on the ESP32-C3 using FastLED, ArduinoJson v7, and Open-Meteo for hourly forecasts. Resolved a string of hard-won bugs: a board destroyed by reversed LED strip polarity, watchdog crashes from interrupt misuse, WS2811 colour order discovery (it's RGB, not GRB), timezone/UTC matching, and a 330Ω data line resistor that finally killed the signal artifacts.</p>
+            <span class="blog-tag">Firmware</span>
+          </div>
         </div>
 
+        <!-- ENTRY 001 — visible by default -->
         <div class="blog-entry buoy">
-          <div class="blog-date">January 2026 — Entry 001</div>
-          <div class="blog-title">The Idea Clicks</div>
-          <p class="blog-body">It started with a wet jacket. The idea is stupid simple: a small LED device that lives by your door. If rain is likely when you're due to leave, it glows. No app to check. No notification to dismiss. Just a light — the way a lamp tells you it's dark outside. We're building it.</p>
-          <span class="blog-tag">Origins</span>
+          <div class="blog-thumb">
+            <span class="blog-thumb-placeholder">Photo Soon</span>
+          </div>
+          <div class="blog-text">
+            <div class="blog-date">January 2026 — Entry 001</div>
+            <div class="blog-title">The Idea Clicks</div>
+            <p class="blog-body">It started with a wet jacket. The idea is stupid simple: a small LED device that lives by your door. If rain is likely, it glows blue. If the UV is high, it glows warm. No app to check. No notification to dismiss. Just a light — the way a lamp tells you it's dark outside. We're building it.</p>
+            <span class="blog-tag">Origins</span>
+          </div>
+        </div>
+
+        <!-- OLDER ENTRIES — hidden by default -->
+        <!-- Add future older entries here with class="blog-entry buoy hidden" -->
+
+      </div>
+
+      <button class="btn-show-more buoy" id="btn-show-more" style="display:none;" onclick="showMoreEntries()">See More Entries</button>
+    </div>
+  </div>
+
+  <!-- ══ ROADMAP / TIMELINE ══ -->
+  <div class="section" id="timeline" style="min-height:auto;">
+    <div class="section-inner">
+      <span class="section-number buoy">04 — Roadmap</span>
+      <h2 class="section-title buoy">Idea to Market</h2>
+      <div class="section-divider"></div>
+
+      <div class="timeline-track">
+
+        <div class="timeline-node done buoy">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Stage 01 — Complete</div>
+          <div class="timeline-label">Concept & Research</div>
+          <div class="timeline-desc">Problem identified, market research, initial feature scoping.</div>
+        </div>
+
+        <div class="timeline-node done buoy">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Stage 02 — Complete</div>
+          <div class="timeline-label">Embedded Software</div>
+          <div class="timeline-desc">Firmware built and functional on ESP32-C3. Weather API integration, LED control logic, captive portal for setup — all working.</div>
+        </div>
+
+        <div class="timeline-node done buoy">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Stage 03 — Complete</div>
+          <div class="timeline-label">Electronic Design</div>
+          <div class="timeline-desc">Dev board prototyping complete. Schematic validated through iterative breadboard builds.</div>
+        </div>
+
+        <div class="timeline-node active buoy">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Stage 04 — In Progress</div>
+          <div class="timeline-label">PCB & Enclosure</div>
+          <div class="timeline-desc">Custom PCB in final review targeting JLCPCB fabrication. Mechanical enclosure is the active design challenge — current focus is on manufacturability at scale and keeping unit cost low.</div>
+        </div>
+
+        <div class="timeline-node future buoy">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Stage 05 — Upcoming</div>
+          <div class="timeline-label">Prototype Validation</div>
+          <div class="timeline-desc">Assembled prototype testing, reliability validation, user feedback.</div>
+        </div>
+
+        <div class="timeline-node future buoy">
+          <div class="timeline-dot"></div>
+          <div class="timeline-stage">Stage 06 — Future</div>
+          <div class="timeline-label">Manufacturing & Launch</div>
+          <div class="timeline-desc">Production tooling, first batch manufacturing, fulfillment.</div>
         </div>
 
       </div>
     </div>
   </div>
 
-  <!-- ── FAQ ── -->
-  <div class="section" id="faq">
+  <!-- ══ FAQ ══ -->
+  <div class="section" id="faq" style="min-height:auto;">
     <div class="section-inner">
-      <span class="section-number buoy">04 — Common Questions</span>
+      <span class="section-number buoy">05 — Common Questions</span>
       <h2 class="section-title buoy">FAQs</h2>
       <div class="section-divider"></div>
 
@@ -464,11 +453,11 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
 
         <div class="faq-item buoy">
           <button class="faq-q" onclick="toggleFaq(this)">
-            How does it know when I leave?
+            How far ahead does it look?
             <i class="faq-icon">+</i>
           </button>
           <div class="faq-a">
-           The Rain Remindr will not know specifically when you leave but looks over the course of the next 12 hours to drive its logic.
+            The default sample window is 8 hours, but it's fully configurable through the setup interface. Set it to whatever matches your routine — 4 hours, 12 hours, whatever works for you.
           </div>
         </div>
 
@@ -478,37 +467,47 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
             <i class="faq-icon">+</i>
           </button>
           <div class="faq-a">
-            Yes — Rain Remindr connects to your home WiFi to pull weather data. Initial setup is done through a simple web interface hosted by the device itself. No hub or bridge required.
+            Yes — it connects to your home WiFi to pull weather data. Setup is done through a simple web interface hosted by the device itself. No hub, no bridge, no account required.
           </div>
         </div>
 
         <div class="faq-item buoy">
           <button class="faq-q" onclick="toggleFaq(this)">
-            What colour is the LED when it's raining?
+            What do the colours mean?
             <i class="faq-icon">+</i>
           </button>
           <div class="faq-a">
-            By default, a calm blue-white for light rain and a more insistent bright white for heavy rain. The colour palette is fully customizable — some early testers prefer amber. It's your door, your vibe.
+            Out of the box: a soft blue for a low chance of rain, scaling to a bright blue for a high chance. Warm tones for UV intensity. All colours are fully customizable — set whatever palette fits your space.
           </div>
         </div>
 
         <div class="faq-item buoy">
           <button class="faq-q" onclick="toggleFaq(this)">
-            When will it be available?
+            Does it need to be plugged in?
             <i class="faq-icon">+</i>
           </button>
           <div class="faq-a">
-            We're targeting a small first batch by late 2026. Drop your email on the contact page and we'll reach out when units are ready. No mailing list spam — just one email when it's time.
+            Yes — Rain Remindr is a plug-in device. It runs off USB-C or a 12V barrel jack. It's designed to sit by your door and stay on, so battery power didn't make sense for the use case.
           </div>
         </div>
 
         <div class="faq-item buoy">
           <button class="faq-q" onclick="toggleFaq(this)">
-            Is there a companion app?
+            Is there an app?
             <i class="faq-icon">+</i>
           </button>
           <div class="faq-a">
-            A lightweight web app for initial setup and schedule config. We're deliberately keeping it minimal — the whole point of Remindr is that you shouldn't need to look at your phone. The app is a one-time setup, not a daily driver.
+            No, and that's by design. Rain Remindr isn't here to compete with your weather app or take up space on your phone. It's a purely visual indicator — something that catches your eye as you walk out the door, nothing more.
+          </div>
+        </div>
+
+        <div class="faq-item buoy">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Can I customize the sensitivity?
+            <i class="faq-icon">+</i>
+          </button>
+          <div class="faq-a">
+            Yes. During setup you can adjust the precipitation threshold, colour palette, sample window, and set a goodnight period so it goes dark while you sleep. All through the on-device web interface.
           </div>
         </div>
 
@@ -516,7 +515,7 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;just
     </div>
   </div>
 
-  <!-- ── CTA ── -->
+  <!-- ══ CTA ══ -->
   <div class="cta-section" id="cta">
     <div class="cta-glass"></div>
     <div class="cta-content">
@@ -546,7 +545,7 @@ const curRing = document.getElementById('curRing');
 let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
 document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
 (function animCur(){ rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1; curRing.style.left=rx+'px'; curRing.style.top=ry+'px'; requestAnimationFrame(animCur); })();
-document.querySelectorAll('a,.btn-cta,.btn-ghost,.faq-q').forEach(el=>{
+document.querySelectorAll('a,.btn-cta,.btn-ghost,.faq-q,.btn-show-more').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';curRing.style.width='44px';curRing.style.height='44px'});
   el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';curRing.style.width='32px';curRing.style.height='32px'});
 });
@@ -554,15 +553,16 @@ document.querySelectorAll('a,.btn-cta,.btn-ghost,.faq-q').forEach(el=>{
 // ═══════════════════════════
 // NAV ACTIVE STATE
 // ═══════════════════════════
-const sections = ['hero','blog','faq'];
-const navLinks = {hero: document.getElementById('nav-hero'), blog: document.getElementById('nav-blog'), faq: document.getElementById('nav-faq')};
+const sections = ['hero','about','blog','timeline','faq'];
+const navMap = {};
+sections.forEach(id => { const el = document.getElementById('nav-'+id); if(el) navMap[id] = el; });
 function updateNav(){
   let current = 'hero';
   sections.forEach(id=>{
     const el = document.getElementById(id);
     if(el && window.scrollY >= el.offsetTop - window.innerHeight/2) current = id;
   });
-  Object.keys(navLinks).forEach(k=>navLinks[k].classList.toggle('active', k===current));
+  Object.keys(navMap).forEach(k => navMap[k].classList.toggle('active', k===current));
 }
 window.addEventListener('scroll', updateNav, {passive:true});
 
@@ -577,6 +577,18 @@ function toggleFaq(btn){
     b.nextElementSibling.classList.remove('open');
   });
   if(!isOpen){ btn.classList.add('open'); answer.classList.add('open'); }
+}
+
+// ═══════════════════════════
+// SHOW MORE DEV LOG ENTRIES
+// ═══════════════════════════
+function showMoreEntries(){
+  document.querySelectorAll('.blog-entry.hidden').forEach(el => el.classList.remove('hidden'));
+  document.getElementById('btn-show-more').style.display = 'none';
+}
+// Auto-show button if there are hidden entries
+if(document.querySelectorAll('.blog-entry.hidden').length > 0){
+  document.getElementById('btn-show-more').style.display = 'inline-block';
 }
 
 // ═══════════════════════════
@@ -606,165 +618,53 @@ const vsSource = `attribute vec2 a_pos; varying vec2 v_uv; void main(){ v_uv = v
 const fsSource = `
   precision highp float;
   varying vec2 v_uv;
-  uniform sampler2D u_scene;
-  uniform float u_time;
-  uniform vec2 u_resolution;
-  uniform float u_scrollY;
-  uniform vec2 u_tPos[24];
-  uniform vec2 u_tVel[24];
-  uniform float u_tAge[24];
-  uniform int u_tCount;
-  uniform vec2 u_wPos[6];
-  uniform float u_wAge[6];
-  uniform float u_wStr[6];
-  uniform int u_wCount;
+  uniform sampler2D u_scene; uniform float u_time; uniform vec2 u_resolution; uniform float u_scrollY;
+  uniform vec2 u_tPos[24]; uniform vec2 u_tVel[24]; uniform float u_tAge[24]; uniform int u_tCount;
+  uniform vec2 u_wPos[6]; uniform float u_wAge[6]; uniform float u_wStr[6]; uniform int u_wCount;
   vec2 getDisplacement(vec2 uv){
-    vec2 disp = vec2(0.0);
-    vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
+    vec2 disp = vec2(0.0); vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
     disp.x += sin(uv.x*3.8+u_time*0.6)*0.0012 + sin(uv.y*5.2+u_time*0.45)*0.0008;
     disp.y += cos(uv.x*4.5+u_time*0.55)*0.0012 + cos(uv.y*2.8+u_time*0.7)*0.0008;
-    for(int i=0; i<24; i++){
-      if(i >= u_tCount) break;
-      vec2 diff = (uv - u_tPos[i]) * aspect;
-      float dist = length(diff);
-      float spatial = exp(-dist*dist*55.0);
-      float temporal = exp(-u_tAge[i]*1.0);
-      disp += u_tVel[i] * spatial * temporal * 0.055;
-      vec2 perp = vec2(-u_tVel[i].y, u_tVel[i].x);
-      disp += perp * sin(dist*22.0) * spatial * temporal * 0.012;
-    }
-    for(int i=0; i<6; i++){
-      if(i >= u_wCount) break;
-      vec2 diff = (uv - u_wPos[i]) * aspect;
-      float dist = length(diff);
-      float age = u_wAge[i];
-      float str = u_wStr[i];
-      float front = age * 0.32;
-      float envelope = exp(-pow((dist - front) / 0.045, 2.0));
-      float fade = exp(-age * 0.65);
-      float wave = sin(dist*28.0 - age*10.0) * envelope * fade * str;
-      vec2 dir = dist > 0.0001 ? normalize(diff) : vec2(0.0);
-      disp += dir * wave * 0.032;
-    }
+    for(int i=0;i<24;i++){if(i>=u_tCount)break;vec2 diff=(uv-u_tPos[i])*aspect;float dist=length(diff);float spatial=exp(-dist*dist*55.0);float temporal=exp(-u_tAge[i]*1.0);disp+=u_tVel[i]*spatial*temporal*0.055;}
+    for(int i=0;i<6;i++){if(i>=u_wCount)break;vec2 diff=(uv-u_wPos[i])*aspect;float dist=length(diff);float age=u_wAge[i];float str=u_wStr[i];float front=age*0.32;float envelope=exp(-pow((dist-front)/0.045,2.0));float fade=exp(-age*0.65);float wave=sin(dist*28.0-age*10.0)*envelope*fade*str;vec2 dir=dist>0.0001?normalize(diff):vec2(0.0);disp+=dir*wave*0.032;}
     return disp;
   }
   void main(){
-    vec2 disp = getDisplacement(v_uv);
-    vec2 scrollingUV = v_uv;
-    scrollingUV.y = fract(v_uv.y + (u_scrollY / u_resolution.y));
-    vec2 sampledUV = scrollingUV + disp;
-    vec3 scene = texture2D(u_scene, sampledUV).rgb;
-    float dispMag = length(disp) * 40.0;
-    vec3 shimmer = vec3(0.55, 0.98, 0.84);
-    vec3 col = mix(scene, shimmer, clamp(dispMag*0.35, 0.0, 0.28));
-    vec2 vig = v_uv * 2.0 - 1.0;
-    col *= 1.0 - dot(vig, vig) * 0.4;
-    float scrollFade = clamp(u_scrollY / (u_resolution.y * 2.0), 0.0, 0.9);
-    vec3 abyssColor = vec3(0.02, 0.06, 0.05);
-    col = mix(col, abyssColor, scrollFade);
-    gl_FragColor = vec4(col, 1.0);
-  }
-`;
-function makeShader(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(s));return null;} return s; }
-const prog=gl.createProgram();
-gl.attachShader(prog,makeShader(gl.VERTEX_SHADER,vsSource));
-gl.attachShader(prog,makeShader(gl.FRAGMENT_SHADER,fsSource));
-gl.linkProgram(prog); gl.useProgram(prog);
-const quadBuf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,quadBuf);
-gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-const aPos=gl.getAttribLocation(prog,'a_pos');
-gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
-const uTime=gl.getUniformLocation(prog,'u_time'); const uRes=gl.getUniformLocation(prog,'u_resolution');
-const uScrollY=gl.getUniformLocation(prog,'u_scrollY');
-const uTPos=gl.getUniformLocation(prog,'u_tPos'); const uTVel=gl.getUniformLocation(prog,'u_tVel');
-const uTAge=gl.getUniformLocation(prog,'u_tAge'); const uTCount=gl.getUniformLocation(prog,'u_tCount');
-const uWPos=gl.getUniformLocation(prog,'u_wPos'); const uWAge=gl.getUniformLocation(prog,'u_wAge');
-const uWStr=gl.getUniformLocation(prog,'u_wStr'); const uWCount=gl.getUniformLocation(prog,'u_wCount');
+    vec2 disp=getDisplacement(v_uv);vec2 scrollingUV=v_uv;scrollingUV.y=fract(v_uv.y+(u_scrollY/u_resolution.y));
+    vec2 sampledUV=scrollingUV+disp;vec3 scene=texture2D(u_scene,sampledUV).rgb;
+    float dispMag=length(disp)*40.0;vec3 shimmer=vec3(0.55,0.98,0.84);vec3 col=mix(scene,shimmer,clamp(dispMag*0.35,0.0,0.28));
+    vec2 vig=v_uv*2.0-1.0;col*=1.0-dot(vig,vig)*0.4;
+    float scrollFade=clamp(u_scrollY/(u_resolution.y*2.0),0.0,0.9);vec3 abyssColor=vec3(0.02,0.06,0.05);col=mix(col,abyssColor,scrollFade);
+    gl_FragColor=vec4(col,1.0);
+  }`;
+function makeShader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(s));return null;}return s;}
+const prog=gl.createProgram();gl.attachShader(prog,makeShader(gl.VERTEX_SHADER,vsSource));gl.attachShader(prog,makeShader(gl.FRAGMENT_SHADER,fsSource));gl.linkProgram(prog);gl.useProgram(prog);
+const quadBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quadBuf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+const aPos=gl.getAttribLocation(prog,'a_pos');gl.enableVertexAttribArray(aPos);gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
+const uTime=gl.getUniformLocation(prog,'u_time'),uRes=gl.getUniformLocation(prog,'u_resolution'),uScrollY=gl.getUniformLocation(prog,'u_scrollY');
+const uTPos=gl.getUniformLocation(prog,'u_tPos'),uTVel=gl.getUniformLocation(prog,'u_tVel'),uTAge=gl.getUniformLocation(prog,'u_tAge'),uTCount=gl.getUniformLocation(prog,'u_tCount');
+const uWPos=gl.getUniformLocation(prog,'u_wPos'),uWAge=gl.getUniformLocation(prog,'u_wAge'),uWStr=gl.getUniformLocation(prog,'u_wStr'),uWCount=gl.getUniformLocation(prog,'u_wCount');
 const uScene=gl.getUniformLocation(prog,'u_scene');
-const sceneTex=gl.createTexture();
-gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,sceneTex);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
-gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-gl.uniform1i(uScene,0);
+const sceneTex=gl.createTexture();gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,sceneTex);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.uniform1i(uScene,0);
 
-// TRAIL + WAVE STATE
-const MAX_TRAIL=24, MAX_WAVES=6;
-let trail=[], waves=[];
-const TRAIL_INTERVAL=16, SPEED_SCALE=0.04, MIN_SPEED=0.05;
-let lastTrailAt=0;
-let lastMX=window.innerWidth/2, lastMY=window.innerHeight/2;
-let lastMoveTime=performance.now();
-
-// Click-only ripple — no movement pulses
-function createRipple(x, y, strength=0.8){
-  if(waves.length>=MAX_WAVES) waves.shift();
-  waves.push({x:x/window.innerWidth, y:y/window.innerHeight, age:0, str:strength});
-}
-['mousedown','touchstart'].forEach(evtType=>{
-  document.addEventListener(evtType, e=>{
-    const pos=e.touches?e.touches[0]:e;
-    const isUI=e.target.closest('a,.btn-cta,.btn-ghost,.faq-q');
-    createRipple(pos.clientX, pos.clientY, isUI?1.2:0.7);
-  },{passive:true});
-});
-document.addEventListener('mousemove', e=>{
-  const now=performance.now();
-  const dt=Math.max(now-lastMoveTime,1);
-  const dx=e.clientX-lastMX, dy=e.clientY-lastMY;
-  const speed=Math.sqrt(dx*dx+dy*dy)/dt;
-  lastMX=e.clientX; lastMY=e.clientY; lastMoveTime=now;
-  if(speed>=MIN_SPEED && now-lastTrailAt>=TRAIL_INTERVAL){
-    lastTrailAt=now;
-    const len=Math.sqrt(dx*dx+dy*dy)||1;
-    const vx=(dx/len)*speed*SPEED_SCALE, vy=(dy/len)*speed*SPEED_SCALE;
-    if(trail.length>=MAX_TRAIL) trail.shift();
-    trail.push({x:e.clientX/window.innerWidth, y:e.clientY/window.innerHeight, vx, vy, age:0});
-  }
-});
-
-function resize(){
-  const W=window.innerWidth, H=window.innerHeight;
-  glCanvas.width=W; glCanvas.height=H; gl.viewport(0,0,W,H);
-  drawTextScene(W,H);
-  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,sceneTex);
-  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,textCanvas);
-}
-document.fonts.ready.then(()=>{ resize(); window.addEventListener('resize',resize); });
-
-const startTime=performance.now(); const DT=1/60;
-function render(){
-  const t=(performance.now()-startTime)*0.001;
-  trail.forEach(p=>p.age+=DT); trail=trail.filter(p=>p.age<3.0);
-  waves.forEach(w=>w.age+=DT); waves=waves.filter(w=>w.age<2.5);
-  const tPos=new Float32Array(MAX_TRAIL*2).fill(0);
-  const tVel=new Float32Array(MAX_TRAIL*2).fill(0);
-  const tAge=new Float32Array(MAX_TRAIL).fill(0);
-  trail.forEach((p,i)=>{ tPos[i*2]=p.x; tPos[i*2+1]=p.y; tVel[i*2]=p.vx; tVel[i*2+1]=p.vy; tAge[i]=p.age; });
-  const wPos=new Float32Array(MAX_WAVES*2).fill(0);
-  const wAge=new Float32Array(MAX_WAVES).fill(0);
-  const wStr=new Float32Array(MAX_WAVES).fill(0);
-  waves.forEach((w,i)=>{ wPos[i*2]=w.x; wPos[i*2+1]=w.y; wAge[i]=w.age; wStr[i]=w.str; });
-  gl.uniform1f(uTime,t); gl.uniform2f(uRes,glCanvas.width,glCanvas.height);
-  gl.uniform1f(uScrollY,window.scrollY);
-  gl.uniform2fv(uTPos,tPos); gl.uniform2fv(uTVel,tVel); gl.uniform1fv(uTAge,tAge); gl.uniform1i(uTCount,trail.length);
-  gl.uniform2fv(uWPos,wPos); gl.uniform1fv(uWAge,wAge); gl.uniform1fv(uWStr,wStr); gl.uniform1i(uWCount,waves.length);
-  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-  requestAnimationFrame(render);
-}
+const MAX_TRAIL=24,MAX_WAVES=6;let trail=[],waves=[];
+const TRAIL_INTERVAL=16,SPEED_SCALE=0.04,MIN_SPEED=0.05;
+let lastTrailAt=0,lastMX=window.innerWidth/2,lastMY=window.innerHeight/2,lastMoveTime=performance.now();
+function createRipple(x,y,strength=0.8){if(waves.length>=MAX_WAVES)waves.shift();waves.push({x:x/window.innerWidth,y:y/window.innerHeight,age:0,str:strength});}
+['mousedown','touchstart'].forEach(evtType=>{document.addEventListener(evtType,e=>{const pos=e.touches?e.touches[0]:e;const isUI=e.target.closest('a,.btn-cta,.btn-ghost,.faq-q,.btn-show-more');createRipple(pos.clientX,pos.clientY,isUI?1.2:0.7);},{passive:true});});
+document.addEventListener('mousemove',e=>{const now=performance.now();const dt=Math.max(now-lastMoveTime,1);const dx=e.clientX-lastMX,dy=e.clientY-lastMY;const speed=Math.sqrt(dx*dx+dy*dy)/dt;lastMX=e.clientX;lastMY=e.clientY;lastMoveTime=now;if(speed>=MIN_SPEED&&now-lastTrailAt>=TRAIL_INTERVAL){lastTrailAt=now;const len=Math.sqrt(dx*dx+dy*dy)||1;const vx=(dx/len)*speed*SPEED_SCALE,vy=(dy/len)*speed*SPEED_SCALE;if(trail.length>=MAX_TRAIL)trail.shift();trail.push({x:e.clientX/window.innerWidth,y:e.clientY/window.innerHeight,vx,vy,age:0});}});
+function resize(){const W=window.innerWidth,H=window.innerHeight;glCanvas.width=W;glCanvas.height=H;gl.viewport(0,0,W,H);drawTextScene(W,H);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,sceneTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,textCanvas);}
+document.fonts.ready.then(()=>{resize();window.addEventListener('resize',resize);});
+const startTime=performance.now();const DT=1/60;
+function render(){const t=(performance.now()-startTime)*0.001;trail.forEach(p=>p.age+=DT);trail=trail.filter(p=>p.age<3.0);waves.forEach(w=>w.age+=DT);waves=waves.filter(w=>w.age<2.5);const tPos=new Float32Array(MAX_TRAIL*2).fill(0),tVel=new Float32Array(MAX_TRAIL*2).fill(0),tAge=new Float32Array(MAX_TRAIL).fill(0);trail.forEach((p,i)=>{tPos[i*2]=p.x;tPos[i*2+1]=p.y;tVel[i*2]=p.vx;tVel[i*2+1]=p.vy;tAge[i]=p.age;});const wPos=new Float32Array(MAX_WAVES*2).fill(0),wAge=new Float32Array(MAX_WAVES).fill(0),wStr=new Float32Array(MAX_WAVES).fill(0);waves.forEach((w,i)=>{wPos[i*2]=w.x;wPos[i*2+1]=w.y;wAge[i]=w.age;wStr[i]=w.str;});gl.uniform1f(uTime,t);gl.uniform2f(uRes,glCanvas.width,glCanvas.height);gl.uniform1f(uScrollY,window.scrollY);gl.uniform2fv(uTPos,tPos);gl.uniform2fv(uTVel,tVel);gl.uniform1fv(uTAge,tAge);gl.uniform1i(uTCount,trail.length);gl.uniform2fv(uWPos,wPos);gl.uniform1fv(uWAge,wAge);gl.uniform1fv(uWStr,wStr);gl.uniform1i(uWCount,waves.length);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
 render();
 
 // BUOY PHYSICS
-class Buoy {
-  constructor(el){ this.el=el; this.ox=0; this.oy=0; this.vx=0; this.vy=0; this.k=0.07; this.damp=0.75; this.phase=Math.random()*Math.PI*2; this.freqX=0.35+Math.random()*0.25; this.freqY=0.28+Math.random()*0.2; this.ampX=0.3+Math.random()*0.4; this.ampY=0.4+Math.random()*0.5; }
-  waveAt(){ let wx=0,wy=0; const rect=this.el.getBoundingClientRect(); const nx=(rect.left+rect.width/2)/window.innerWidth; const ny=(rect.top+rect.height/2)/window.innerHeight; const ar=window.innerWidth/window.innerHeight; trail.forEach(p=>{ const ddx=(nx-p.x)*ar, ddy=ny-p.y; const dist=Math.sqrt(ddx*ddx+ddy*ddy); const s=Math.exp(-dist*dist*55)*Math.exp(-p.age*1.0); wx+=p.vx*s; wy+=p.vy*s; }); waves.forEach(w=>{ const ddx=(nx-w.x)*ar, ddy=ny-w.y; const dist=Math.sqrt(ddx*ddx+ddy*ddy); const front=w.age*0.32; const envelope=Math.exp(-Math.pow((dist-front)/0.045,2)); const fade=Math.exp(-w.age*0.65); const mag=Math.sin(dist*28-w.age*10)*envelope*fade*w.str; if(dist>0.0001){ wx+=mag*(ddx/dist)*0.032; wy+=mag*(ddy/dist)*0.032; } }); return {wx,wy}; }
-  update(t){ const {wx,wy}=this.waveAt(); const tx=Math.sin(t*this.freqX+this.phase)*this.ampX; const ty=Math.sin(t*this.freqY+this.phase*1.3)*this.ampY; const fx=(-this.ox+tx*0.35+wx*180)*this.k; const fy=(-this.oy+ty*0.4+wy*180)*this.k; this.vx=(this.vx+fx)*this.damp; this.vy=(this.vy+fy)*this.damp; this.ox+=this.vx; this.oy+=this.vy; this.ox=Math.max(-5,Math.min(5,this.ox)); this.oy=Math.max(-5,Math.min(5,this.oy)); this.el.style.transform=`translate(${this.ox.toFixed(2)}px,${this.oy.toFixed(2)}px)`; }
-}
-const buoys=[];
-document.querySelectorAll('.buoy').forEach(el=>buoys.push(new Buoy(el)));
-function animBuoys(){ const t=(performance.now()-startTime)*0.001; buoys.forEach(b=>b.update(t)); requestAnimationFrame(animBuoys); }
-animBuoys();
+class Buoy{constructor(el){this.el=el;this.ox=0;this.oy=0;this.vx=0;this.vy=0;this.k=0.07;this.damp=0.75;this.phase=Math.random()*Math.PI*2;this.freqX=0.35+Math.random()*0.25;this.freqY=0.28+Math.random()*0.2;this.ampX=0.3+Math.random()*0.4;this.ampY=0.4+Math.random()*0.5;}waveAt(){let wx=0,wy=0;const rect=this.el.getBoundingClientRect();const nx=(rect.left+rect.width/2)/window.innerWidth;const ny=(rect.top+rect.height/2)/window.innerHeight;const ar=window.innerWidth/window.innerHeight;trail.forEach(p=>{const ddx=(nx-p.x)*ar,ddy=ny-p.y;const dist=Math.sqrt(ddx*ddx+ddy*ddy);const s=Math.exp(-dist*dist*55)*Math.exp(-p.age*1.0);wx+=p.vx*s;wy+=p.vy*s;});waves.forEach(w=>{const ddx=(nx-w.x)*ar,ddy=ny-w.y;const dist=Math.sqrt(ddx*ddx+ddy*ddy);const front=w.age*0.32;const envelope=Math.exp(-Math.pow((dist-front)/0.045,2));const fade=Math.exp(-w.age*0.65);const mag=Math.sin(dist*28-w.age*10)*envelope*fade*w.str;if(dist>0.0001){wx+=mag*(ddx/dist)*0.032;wy+=mag*(ddy/dist)*0.032;}});return{wx,wy};}update(t){const{wx,wy}=this.waveAt();const tx=Math.sin(t*this.freqX+this.phase)*this.ampX;const ty=Math.sin(t*this.freqY+this.phase*1.3)*this.ampY;const fx=(-this.ox+tx*0.35+wx*180)*this.k;const fy=(-this.oy+ty*0.4+wy*180)*this.k;this.vx=(this.vx+fx)*this.damp;this.vy=(this.vy+fy)*this.damp;this.ox+=this.vx;this.oy+=this.vy;this.ox=Math.max(-5,Math.min(5,this.ox));this.oy=Math.max(-5,Math.min(5,this.oy));this.el.style.transform=`translate(${this.ox.toFixed(2)}px,${this.oy.toFixed(2)}px)`;}}
+const buoys=[];document.querySelectorAll('.buoy').forEach(el=>buoys.push(new Buoy(el)));
+function animBuoys(){const t=(performance.now()-startTime)*0.001;buoys.forEach(b=>b.update(t));requestAnimationFrame(animBuoys);}animBuoys();
 </script>
 </body>
 </html>
