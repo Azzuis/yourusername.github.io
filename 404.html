@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>404 — Remindr</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;background:#0b2420;cursor:none;overflow:hidden;}
+
+  /* Cursor */
+  .cur{position:fixed;width:8px;height:8px;border-radius:50%;background:#7fffd4;pointer-events:none;z-index:1000;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+  .cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(127,255,212,0.4);pointer-events:none;z-index:999;transform:translate(-50%,-50%)}
+
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;padding:1.6rem 2.5vw;z-index:100;}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:#c8ede8;text-decoration:none;display:flex;align-items:center;gap:0.45rem;text-shadow:0 0 20px rgba(82,240,180,0.4);flex-shrink:0;}
+  .nav-led{width:6px;height:6px;border-radius:50%;background:#52f0b4;box-shadow:0 0 8px #52f0b4;animation:ledp 2.5s ease-in-out infinite;flex-shrink:0;}
+  @keyframes ledp{0%,100%{opacity:1}50%{opacity:0.3}}
+
+  /* Center layout */
+  .error-wrap{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:2rem;
+  }
+
+  /* Giant 404 */
+  .error-code{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(8rem, 20vw, 16rem);
+    color:transparent;
+    letter-spacing:0.05em;
+    line-height:0.85;
+    -webkit-text-stroke:2px rgba(82,240,180,0.12);
+    position:relative;
+    user-select:none;
+  }
+  .error-code::after{
+    content:'404';
+    position:absolute;
+    inset:0;
+    -webkit-text-stroke:0;
+    color:rgba(82,240,180,0.06);
+    filter:blur(20px);
+  }
+
+  /* LED status indicator row */
+  .error-status{
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    margin-top:1.5rem;
+    margin-bottom:2rem;
+  }
+  .error-led{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#f05252;
+    box-shadow:0 0 12px rgba(240,82,82,0.6);
+    animation:ledErr 1.2s ease-in-out infinite;
+  }
+  @keyframes ledErr{0%,100%{opacity:1}50%{opacity:0.2}}
+  .error-label{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:rgba(240,82,82,0.5);
+  }
+
+  /* Message */
+  .error-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(1.4rem, 3vw, 2.2rem);
+    color:#c8ede8;
+    letter-spacing:0.06em;
+    margin-bottom:0.8rem;
+  }
+  .error-text{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.95rem;
+    color:rgba(200,237,232,0.4);
+    line-height:1.6;
+    max-width:380px;
+    margin-bottom:2.5rem;
+  }
+
+  /* Button */
+  .btn-cta{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.8rem;
+    font-weight:700;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:#0b2420;
+    background:#52f0b4;
+    border:none;
+    padding:0.8rem 2.4rem;
+    cursor:none;
+    text-decoration:none;
+    display:inline-block;
+    transition:background 0.2s,box-shadow 0.2s;
+  }
+  .btn-cta:hover{background:#7fffd4;box-shadow:0 0 28px rgba(82,240,180,0.5)}
+
+  /* Corner meta — matches homepage */
+  .cmeta{
+    position:absolute;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.6rem;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:rgba(200,237,232,0.12);
+    line-height:1.9;
+  }
+  .cm-bl{bottom:2.5%;left:2.5vw}
+  .cm-br{bottom:2.5%;right:2.5vw;text-align:right}
+
+  /* Ambient floating particles */
+  .particle{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:rgba(82,240,180,0.15);
+    animation:float linear infinite;
+    pointer-events:none;
+  }
+  @keyframes float{
+    0%{transform:translateY(0) scale(1);opacity:0}
+    10%{opacity:1}
+    90%{opacity:1}
+    100%{transform:translateY(-100vh) scale(0.3);opacity:0}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="nav-led"></span>REMINDR</a>
+</nav>
+
+<div class="error-wrap">
+  <div class="error-code">404</div>
+
+  <div class="error-status">
+    <span class="error-led"></span>
+    <span class="error-label">Signal Lost</span>
+  </div>
+
+  <h1 class="error-title">Nothing to Remind You Of Here</h1>
+  <p class="error-text">The page you're looking for doesn't exist — or hasn't been built yet. We're still wiring things up.</p>
+
+  <a href="index.html" class="btn-cta">Back to Home</a>
+
+  <div class="cmeta cm-bl">Error 404 // Page Not Found<br>remind-r.ca</div>
+  <div class="cmeta cm-br">Smart IoT // 2026<br>Status: Missing</div>
+</div>
+
+<!-- Cursor -->
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),curRing=document.getElementById('curRing');
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,.btn-cta').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';curRing.style.width='44px';curRing.style.height='44px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';curRing.style.width='32px';curRing.style.height='32px'});
+});
+
+// Ambient particles
+const wrap=document.querySelector('.error-wrap');
+for(let i=0;i<15;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.left=Math.random()*100+'%';
+  p.style.bottom='-10px';
+  p.style.animationDuration=(6+Math.random()*8)+'s';
+  p.style.animationDelay=(Math.random()*10)+'s';
+  p.style.width=p.style.height=(1+Math.random()*2)+'px';
+  wrap.appendChild(p);
+}
+</script>
+</body>
+</html>

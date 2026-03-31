@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Terms of Access — Remindr</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;background:#0b2420;cursor:none;scroll-behavior:smooth;}
+
+  /* Cursor */
+  .cur{position:fixed;width:8px;height:8px;border-radius:50%;background:#7fffd4;pointer-events:none;z-index:1000;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+  .cur-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(127,255,212,0.4);pointer-events:none;z-index:999;transform:translate(-50%,-50%)}
+
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;padding:1.6rem 2.5vw;z-index:100;background:linear-gradient(to bottom, rgba(11,36,32,0.9) 0%, transparent 100%);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;color:#c8ede8;text-decoration:none;display:flex;align-items:center;gap:0.45rem;text-shadow:0 0 20px rgba(82,240,180,0.4);flex-shrink:0;}
+  .nav-led{width:6px;height:6px;border-radius:50%;background:#52f0b4;box-shadow:0 0 8px #52f0b4;animation:ledp 2.5s ease-in-out infinite;flex-shrink:0;}
+  @keyframes ledp{0%,100%{opacity:1}50%{opacity:0.3}}
+
+  /* Main container */
+  .terms-wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:8rem 2.5vw 6rem;
+  }
+
+  /* Header */
+  .terms-header{
+    margin-bottom:3rem;
+    padding-bottom:2rem;
+    border-bottom:1px solid rgba(82,240,180,0.12);
+  }
+  .terms-label{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.65rem;
+    font-weight:700;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:rgba(82,240,180,0.4);
+    margin-bottom:0.8rem;
+  }
+  .terms-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(2.2rem, 5vw, 3.4rem);
+    color:#c8ede8;
+    letter-spacing:0.04em;
+    line-height:1.05;
+    margin-bottom:0.8rem;
+  }
+  .terms-updated{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.1em;
+    color:rgba(200,237,232,0.25);
+  }
+
+  /* Notice block */
+  .terms-notice{
+    background:rgba(82,240,180,0.04);
+    border:1px solid rgba(82,240,180,0.12);
+    border-radius:10px;
+    padding:1.8rem 2rem;
+    margin-bottom:2.5rem;
+  }
+  .terms-notice p{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:1rem;
+    color:rgba(200,237,232,0.6);
+    line-height:1.7;
+  }
+
+  /* Section headings */
+  .terms-section-num{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    color:rgba(82,240,180,0.35);
+    margin-bottom:0.3rem;
+  }
+  .terms-section-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.6rem;
+    color:#c8ede8;
+    letter-spacing:0.05em;
+    margin-bottom:1rem;
+  }
+  .terms-section{
+    margin-bottom:2.5rem;
+  }
+
+  /* Body text */
+  .terms-body{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.95rem;
+    font-weight:400;
+    color:rgba(200,237,232,0.5);
+    line-height:1.75;
+  }
+  .terms-body p{
+    margin-bottom:1rem;
+  }
+
+  /* Sub-clauses */
+  .terms-clause{
+    padding-left:1.6rem;
+    margin-bottom:0.6rem;
+    position:relative;
+  }
+  .terms-clause::before{
+    content:attr(data-label);
+    position:absolute;
+    left:0;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.85rem;
+    font-weight:700;
+    color:rgba(82,240,180,0.3);
+  }
+
+  /* Divider */
+  .terms-divider{
+    width:40px;
+    height:1px;
+    background:rgba(82,240,180,0.15);
+    margin:3rem 0;
+  }
+
+  /* Footer */
+  .terms-footer{
+    border-top:1px solid rgba(82,240,180,0.08);
+    padding-top:2rem;
+    margin-top:1rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+  .terms-copyright{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.12em;
+    color:rgba(200,237,232,0.2);
+  }
+  .terms-contact a{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem;
+    font-weight:700;
+    letter-spacing:0.12em;
+    color:rgba(82,240,180,0.35);
+    text-decoration:none;
+    transition:color 0.2s;
+  }
+  .terms-contact a:hover{color:#52f0b4}
+
+  /* Back link */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem;
+    font-weight:700;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:rgba(200,237,232,0.35);
+    text-decoration:none;
+    transition:color 0.2s;
+    margin-bottom:2rem;
+  }
+  .back-link:hover{color:#c8ede8}
+  .back-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="nav-led"></span>REMINDR</a>
+</nav>
+
+<div class="terms-wrap">
+
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Home
+  </a>
+
+  <div class="terms-header">
+    <p class="terms-label">Legal</p>
+    <h1 class="terms-title">Confidential Pre-Launch Site Notice &amp; Terms&nbsp;of&nbsp;Access</h1>
+    <p class="terms-updated">Last Updated — March 30, 2026</p>
+  </div>
+
+  <!-- NOTICE -->
+  <div class="terms-notice">
+    <p>This website and all content contained herein are the proprietary and confidential property of Remindr. This site is currently under active development and is being presented solely for demonstration and portfolio purposes. Remindr has not yet commenced formal funding rounds, and the products, designs, concepts, and intellectual property displayed on this site are in various stages of development.</p>
+    <br>
+    <p>By accessing, browsing, or otherwise viewing any portion of this website beyond this notice, you ("the Viewer") acknowledge and agree to the following terms and conditions.</p>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="terms-section">
+    <p class="terms-section-num">Section 01</p>
+    <h2 class="terms-section-title">Confidentiality</h2>
+    <div class="terms-body">
+      <p>All content on this website — including but not limited to product concepts, designs, technical specifications, firmware details, hardware schematics, software, branding, business strategies, roadmaps, development logs, images, and any other materials (collectively, "Confidential Information") — is proprietary to Remindr and is disclosed to you on a strictly confidential basis.</p>
+      <p>You agree that you shall:</p>
+      <div class="terms-clause" data-label="(a)">Not disclose, distribute, reproduce, copy, transmit, publish, or otherwise make available any Confidential Information to any third party, in whole or in part, by any means, without the prior written consent of Remindr.</div>
+      <div class="terms-clause" data-label="(b)">Not use any Confidential Information for any purpose other than your personal evaluation and viewing of this website.</div>
+      <div class="terms-clause" data-label="(c)">Not reverse-engineer, deconstruct, or attempt to derive the underlying methods, algorithms, or processes from any product, design, or technology presented on this site.</div>
+      <div class="terms-clause" data-label="(d)">Take all reasonable measures to protect the confidentiality of the information accessed herein.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="terms-section">
+    <p class="terms-section-num">Section 02</p>
+    <h2 class="terms-section-title">Intellectual Property</h2>
+    <div class="terms-body">
+      <p>All intellectual property displayed on this website — including but not limited to trademarks, trade names, logos, product names, industrial designs, inventions, trade secrets, original works of authorship, and any associated goodwill — is and shall remain the sole and exclusive property of Remindr and its founders.</p>
+      <p>Nothing on this website shall be construed as granting, by implication, estoppel, or otherwise, any licence or right to use any intellectual property displayed herein without the express prior written permission of Remindr.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="terms-section">
+    <p class="terms-section-num">Section 03</p>
+    <h2 class="terms-section-title">No Warranty or Representation</h2>
+    <div class="terms-body">
+      <p>This website and its contents are provided on an "as-is" and "as-available" basis. Remindr makes no representations or warranties of any kind, express or implied, regarding the accuracy, completeness, reliability, or suitability of any information presented. Product specifications, features, pricing, timelines, and availability are subject to change without notice.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="terms-section">
+    <p class="terms-section-num">Section 04</p>
+    <h2 class="terms-section-title">Limitation of Liability</h2>
+    <div class="terms-body">
+      <p>In no event shall Remindr, its founders, officers, employees, or agents be liable for any direct, indirect, incidental, consequential, special, or exemplary damages arising out of or in connection with your access to or use of this website or any Confidential Information contained herein.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="terms-section">
+    <p class="terms-section-num">Section 05</p>
+    <h2 class="terms-section-title">Governing Law</h2>
+    <div class="terms-body">
+      <p>These Terms of Access shall be governed by and construed in accordance with the laws of the Province of British Columbia and the federal laws of Canada applicable therein, without regard to conflict of law principles. Any disputes arising under or in connection with these terms shall be subject to the exclusive jurisdiction of the courts of British Columbia.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="terms-section">
+    <p class="terms-section-num">Section 06</p>
+    <h2 class="terms-section-title">Acceptance</h2>
+    <div class="terms-body">
+      <p>By proceeding beyond this notice — whether by scrolling, clicking, navigating, or otherwise accessing any further content on this website — you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions of Access.</p>
+      <p>If you do not agree to these terms, you must exit this website immediately.</p>
+    </div>
+  </div>
+
+  <div class="terms-divider"></div>
+
+  <div class="terms-footer">
+    <span class="terms-copyright">&copy; 2026 Remindr. All rights reserved.</span>
+    <span class="terms-contact"><a href="mailto:Gb@Remind-r.ca">Gb@Remind-r.ca</a></span>
+  </div>
+
+</div>
+
+<!-- Cursor -->
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<script>
+const cur=document.getElementById('cur'),curRing=document.getElementById('curRing');
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';curRing.style.width='44px';curRing.style.height='44px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';curRing.style.width='32px';curRing.style.height='32px'});
+});
+</script>
+</body>
+</html>

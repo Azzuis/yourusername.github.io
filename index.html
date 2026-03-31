@@ -245,6 +245,68 @@
     object-fit: cover;
     border-radius: 10px;
   }
+
+    /* Confidentiality blurb — hero section */
+  .conf-blurb {
+  position: absolute;
+  right: 2.5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 240px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  color: rgba(200, 237, 232, 0.3);
+  text-align: right;
+  pointer-events: all;
+  }
+  .conf-blurb__icon {
+  display: block;
+  margin-left: auto;
+  margin-bottom: 0.6rem;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid rgba(82, 240, 180, 0.3);
+  border-radius: 50%;
+  position: relative;
+  }
+  .conf-blurb__icon::after {
+  content: '!';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  color: rgba(82, 240, 180, 0.4);
+  font-weight: 700;
+  }
+  .conf-blurb a {
+  color: rgba(82, 240, 180, 0.4);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(82, 240, 180, 0.15);
+  transition: color 0.2s, border-color 0.2s;
+  }
+  .conf-blurb a:hover {
+  color: #52f0b4;
+  border-color: rgba(82, 240, 180, 0.5);
+  }
+  @media (max-width: 768px) {
+  .conf-blurb {
+  position: relative;
+  right: auto;
+  top: auto;
+  transform: none;
+  max-width: 320px;
+  text-align: center;
+  margin-top: 2.5rem;
+  }
+  .conf-blurb__icon {
+  margin: 0 auto 0.6rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -270,6 +332,10 @@
     </div>
     <div class="cmeta cm-bl">Smart IoT // 2026<br>remind-r.ca</div>
     <div class="cmeta cm-br">Est. 2026 //<br>Design No. 01</div>
+    <div class="conf-blurb buoy">
+      <span class="conf-blurb__icon"></span>
+      This site is under active development. All content is confidential and may not be shared or reproduced. By continuing, you agree to our <a href="terms.html">Terms&nbsp;of&nbsp;Access</a>.
+    </div>
   </div>
 
    <div class="section" id="projects" style="padding-bottom: 0;">
